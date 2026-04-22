@@ -1,7 +1,7 @@
 export const environment = {
     production: false,
     shopName: 'Ghanim Enterprises',
-    apiUrl: 'http://localhost:8080/api',
+    apiUrl: 'https://web-production-81490.up.railway.app/api',
     currency: 'LKR',
     currencySymbol: 'Rs. '
 };
