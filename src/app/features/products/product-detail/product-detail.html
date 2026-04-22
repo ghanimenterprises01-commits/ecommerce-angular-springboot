@@ -19,7 +19,15 @@
     <!-- Product image -->
     <div class="detail__image">
       <div class="detail__image-main">
-        <span class="detail__emoji">{{ product().emoji }}</span>
+        <img
+          *ngIf="product()!.imageUrl"
+          [src]="product()!.imageUrl"
+          [alt]="product()!.name"
+          class="detail__real-img"
+        />
+        <span class="detail__emoji" *ngIf="!product()!.imageUrl">
+          {{ product()!.emoji }}
+        </span>
       </div>
       <div class="detail__badges">
         <span class="detail__badge detail__badge--sale" *ngIf="product().badge === 'Sale'">

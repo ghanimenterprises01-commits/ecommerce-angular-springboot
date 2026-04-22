@@ -152,7 +152,15 @@
       <div class="products-grid" *ngIf="productList.length > 0 && viewMode() === 'grid'">
         <div class="pcard" *ngFor="let product of productList">
           <a [routerLink]="['/products', product.id]" class="pcard__img">
-            <span class="pcard__emoji">{{ product.emoji }}</span>
+            <img
+              *ngIf="product.imageUrl"
+              [src]="product.imageUrl"
+              [alt]="product.name"
+              class="pcard__real-img"
+            />
+            <span class="pcard__emoji" *ngIf="!product.imageUrl">
+              {{ product.emoji }}
+            </span>
             <span
               class="pcard__badge"
               *ngIf="product.badge"

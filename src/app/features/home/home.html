@@ -1,22 +1,25 @@
 <div class="home">
-
   <!-- Banner Slider -->
   <section class="banner-slider">
     <div class="banner-slider__track">
-      <div class="banner-slide"
-           *ngFor="let banner of banners; let i = index"
-           [class.active]="currentBanner() === i"
-           [style.background]="banner.bg">
+      <div
+        class="banner-slide"
+        *ngFor="let banner of banners; let i = index"
+        [class.active]="currentBanner() === i"
+        [style.background]="banner.bg"
+      >
         <div class="container banner-slide__inner">
           <div class="banner-slide__content">
             <h1 class="banner-slide__title" [style.color]="banner.accent">
               {{ banner.title }}
             </h1>
             <p class="banner-slide__sub">{{ banner.subtitle }}</p>
-            <a class="banner-slide__btn"
-               [routerLink]="['/products']"
-               [queryParams]="{category: banner.slug}"
-               [style.background]="banner.accent">
+            <a
+              class="banner-slide__btn"
+              [routerLink]="['/products']"
+              [queryParams]="{ category: banner.slug }"
+              [style.background]="banner.accent"
+            >
               {{ banner.btn }}
             </a>
           </div>
@@ -26,21 +29,24 @@
     </div>
     <!-- Dots -->
     <div class="banner-slider__dots">
-      <button *ngFor="let banner of banners; let i = index"
-              class="banner-slider__dot"
-              [class.active]="currentBanner() === i"
-              (click)="setBanner(i)">
-      </button>
+      <button
+        *ngFor="let banner of banners; let i = index"
+        class="banner-slider__dot"
+        [class.active]="currentBanner() === i"
+        (click)="setBanner(i)"
+      ></button>
     </div>
   </section>
 
   <!-- Category Pills -->
   <section class="cat-pills">
     <div class="container cat-pills__inner">
-      <a class="cat-pill"
-         *ngFor="let cat of categories()"
-         [routerLink]="['/products']"
-         [queryParams]="{category: cat.slug}">
+      <a
+        class="cat-pill"
+        *ngFor="let cat of categories()"
+        [routerLink]="['/products']"
+        [queryParams]="{ category: cat.slug }"
+      >
         <span class="cat-pill__emoji">{{ cat.emoji }}</span>
         <span class="cat-pill__name">{{ cat.name }}</span>
       </a>
@@ -53,16 +59,20 @@
       <div class="widget" *ngFor="let widget of widgets">
         <div class="widget__header">
           <h2 class="widget__title">{{ widget.title }}</h2>
-          <a class="widget__link"
-             [routerLink]="['/products']"
-             [queryParams]="{category: widget.slug}">
+          <a
+            class="widget__link"
+            [routerLink]="['/products']"
+            [queryParams]="{ category: widget.slug }"
+          >
             See all
           </a>
         </div>
         <div class="widget__products">
-          <a class="widget-product"
-             *ngFor="let product of widget.products"
-             [routerLink]="['/products', product.id]">
+          <a
+            class="widget-product"
+            *ngFor="let product of widget.products"
+            [routerLink]="['/products', product.id]"
+          >
             <div class="widget-product__img">{{ product.emoji }}</div>
             <p class="widget-product__name">{{ product.name }}</p>
             <p class="widget-product__price">{{ currencySymbol }} {{ product.price | number }}</p>
@@ -82,13 +92,34 @@
       <div class="featured__scroller">
         <div class="product-card" *ngFor="let product of featuredProducts()">
           <div class="product-card__img">
-            <span>{{ product.emoji }}</span>
-            <span class="product-card__badge"
-                  *ngIf="product.badge"
-                  [class.badge--sale]="product.badge === 'Sale'"
-                  [class.badge--new]="product.badge === 'New'"
-                  [class.badge--best]="product.badge === 'Best Seller'">
-              {{ product.badge }}
+            <!-- Real image if available -->
+            <img
+              *ngIf="product.imageUrl"
+              [src]="product.imageUrl"
+              [alt]="product.name"
+              class="product-card__real-img"
+            />
+
+            <!-- Emoji fallback if no image -->
+            <span *ngIf="!product.imageUrl">
+              {{ product.emoji }}
+            </span>
+
+            <!-- Badge -->
+            <span
+              class="product-card__badge"
+              *ngIf="product.badge"
+              [class.badge--sale]="product.badge === 'SALE'"
+              [class.badge--new]="product.badge === 'NEW'"
+              [class.badge--best]="product.badge === 'BEST_SELLER'"
+            >
+              {{
+                product.badge === 'BEST_SELLER'
+                  ? 'Best Seller'
+                  : product.badge === 'NEW'
+                    ? 'New'
+                    : 'Sale'
+              }}
             </span>
           </div>
           <div class="product-card__body">
@@ -102,9 +133,7 @@
                 {{ currencySymbol }} {{ product.originalPrice | number }}
               </span> -->
             </div>
-            <button class="product-card__btn" (click)="addToCart(product)">
-              Add to Cart
-            </button>
+            <button class="product-card__btn" (click)="addToCart(product)">Add to Cart</button>
           </div>
         </div>
       </div>
@@ -127,5 +156,4 @@
       </div>
     </div>
   </section>
-
 </div>
