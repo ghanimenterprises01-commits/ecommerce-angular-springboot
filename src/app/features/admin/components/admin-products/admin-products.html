@@ -1,14 +1,20 @@
 <div class="admin-products">
-
   <!-- Header -->
   <div class="admin-products__header">
     <div class="admin-products__filters">
       <div class="admin-search">
-        <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/>
+        <svg
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <circle cx="11" cy="11" r="8" />
+          <path d="M21 21l-4.35-4.35" />
         </svg>
-        <input type="text" placeholder="Search products..."
-               (input)="onSearchInput($event)" />
+        <input type="text" placeholder="Search products..." (input)="onSearchInput($event)" />
       </div>
       <select class="admin-select" (change)="onCategoryFilter($event)">
         <option value="">All Categories</option>
@@ -17,9 +23,7 @@
         </option>
       </select>
     </div>
-    <button class="admin-btn" (click)="showAddForm.set(true)">
-      + Add Product
-    </button>
+    <button class="admin-btn" (click)="showAddForm.set(true)">+ Add Product</button>
   </div>
 
   <!-- Loading state -->
@@ -33,59 +37,97 @@
     <div class="admin-modal">
       <div class="admin-modal__header">
         <h3>Add New Product</h3>
-        <button class="admin-modal__close"
-                (click)="showAddForm.set(false)">✕</button>
+        <button class="admin-modal__close" (click)="showAddForm.set(false)">✕</button>
       </div>
       <div class="admin-modal__body">
         <div class="admin-form__row">
           <div class="admin-form__field">
             <label>Product Name <span class="required">*</span></label>
-            <input type="text" placeholder="Enter product name"
-                   [value]="newProduct().name"
-                   (input)="onNewFieldInput('name', $event)" />
+            <input
+              type="text"
+              placeholder="Enter product name"
+              [value]="newProduct().name"
+              (input)="onNewFieldInput('name', $event)"
+            />
           </div>
           <div class="admin-form__field">
             <label>Category <span class="required">*</span></label>
             <select (change)="onNewFieldInput('categoryId', $event)">
               <option value="0">Select category</option>
-              <option *ngFor="let cat of categories()"
-                      [value]="cat.id">
+              <option *ngFor="let cat of categories()" [value]="cat.id">
                 {{ cat.name }}
               </option>
             </select>
           </div>
           <div class="admin-form__field">
             <label>Emoji Icon</label>
-            <input type="text" placeholder="📦"
-                   [value]="newProduct().emoji"
-                   (input)="onNewFieldInput('emoji', $event)" />
+            <input
+              type="text"
+              placeholder="📦"
+              [value]="newProduct().emoji"
+              (input)="onNewFieldInput('emoji', $event)"
+            />
           </div>
         </div>
+
         <div class="admin-form__field admin-form__field--full">
           <label>Description</label>
-          <textarea placeholder="Product description..."
-                    rows="3"
-                    (input)="onNewFieldInput('description', $event)">
+          <textarea
+            placeholder="Product description..."
+            [value]="newProduct().description"
+            rows="3"
+            (input)="onNewFieldInput('description', $event)"
+          >
           </textarea>
         </div>
+
+        <div class="admin-form__field admin-form__field--full">
+          <label>Specifications</label>
+          <textarea
+            placeholder="Material: Aluminium&#10;Size: 24cm&#10;Weight: 800g"
+            [value]="newProduct().specifications"
+            rows="4"
+            (input)="onNewFieldInput('specifications', $event)"
+          >
+          </textarea>
+        </div>
+
         <div class="admin-form__row">
           <div class="admin-form__field">
             <label>Retail Price (Rs.) <span class="required">*</span></label>
-            <input type="number" placeholder="0"
-                   [value]="newProduct().retailPrice"
-                   (input)="onNewFieldInput('retailPrice', $event)" />
+            <input
+              type="number"
+              placeholder="Enter retail price"
+              [value]="newProduct().retailPrice ?? ''"
+              (input)="onNewFieldInput('retailPrice', $event)"
+            />
           </div>
           <div class="admin-form__field">
             <label>Wholesale Price (Rs.) <span class="required">*</span></label>
-            <input type="number" placeholder="0"
-                   [value]="newProduct().wholesalePrice"
-                   (input)="onNewFieldInput('wholesalePrice', $event)" />
+            <input
+              type="number"
+              placeholder="Enter wholesale price"
+              [value]="newProduct().wholesalePrice ?? ''"
+              (input)="onNewFieldInput('wholesalePrice', $event)"
+            />
+          </div>
+          <div class="admin-form__field">
+            <label>Cost Price (Rs.)</label>
+            <input
+              type="number"
+              placeholder="Enter cost price"
+              [value]="newProduct().costPrice ?? ''"
+              (input)="onNewFieldInput('costPrice', $event)"
+            />
           </div>
           <div class="admin-form__field">
             <label>Stock Quantity <span class="required">*</span></label>
-            <input type="number" placeholder="0"
-                   [value]="newProduct().stock"
-                   (input)="onNewFieldInput('stock', $event)" />
+            <input
+              type="number"
+              placeholder="Enter stock quantity"
+              [value]="newProduct().stock ?? ''"
+              (input)="onNewFieldInput('stock', $event)"
+            />
           </div>
         </div>
         <div class="admin-form__row">
@@ -98,22 +140,37 @@
               <option value="BEST_SELLER">Best Seller</option>
             </select>
           </div>
-          <div class="admin-form__field">
-            <label>Image URL</label>
-            <input type="text" placeholder="https://..."
-                   [value]="newProduct().imageUrl"
-                   (input)="onNewFieldInput('imageUrl', $event)" />
+          <!-- Image URLs section -->
+          <div class="admin-form__field admin-form__field--full">
+            <label>Product Images (Cloudinary URLs)</label>
+            <div class="image-url-inputs">
+              <div
+                class="image-url-input"
+                *ngFor="let url of newProduct().imageUrls; let i = index; trackBy: trackByIndex"
+              >
+                <span class="image-url-input__label">
+                  {{ i === 0 ? '⭐ Main' : 'Image ' + (i + 1) }}
+                </span>
+                <input
+                  type="text"
+                  [placeholder]="'https://res.cloudinary.com/...'"
+                  [value]="url"
+                  (blur)="onImageUrlInput(i, $event)"
+                  (keyup.enter)="onImageUrlInput(i, $event)"
+                />
+                <div class="image-url-input__preview" *ngIf="url">
+                  <img [src]="url" alt="preview" onerror="this.style.display = 'none'" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="admin-modal__footer">
-        <button class="admin-btn admin-btn--outline"
-                (click)="showAddForm.set(false)">
+        <button class="admin-btn admin-btn--outline" (click)="showAddForm.set(false)">
           Cancel
         </button>
-        <button class="admin-btn"
-                [disabled]="isSaving()"
-                (click)="addProduct()">
+        <button class="admin-btn" [disabled]="isSaving()" (click)="addProduct()">
           {{ isSaving() ? 'Saving...' : 'Save Product' }}
         </button>
       </div>
@@ -131,53 +188,83 @@
         <div class="admin-form__row">
           <div class="admin-form__field">
             <label>Product Name <span class="required">*</span></label>
-            <input type="text"
-                   [value]="editProduct().name"
-                   (input)="onEditFieldInput('name', $event)" />
+            <input
+              type="text"
+              [value]="editProduct().name"
+              (input)="onEditFieldInput('name', $event)"
+            />
           </div>
           <div class="admin-form__field">
             <label>Category <span class="required">*</span></label>
             <select (change)="onEditFieldInput('categoryId', $event)">
               <option value="0">Select category</option>
-              <option *ngFor="let cat of categories()"
-                      [value]="cat.id"
-                      [selected]="cat.id === editProduct().categoryId">
+              <option
+                *ngFor="let cat of categories()"
+                [value]="cat.id"
+                [selected]="cat.id === editProduct().categoryId"
+              >
                 {{ cat.name }}
-              </option> 
+              </option>
             </select>
           </div>
           <div class="admin-form__field">
             <label>Emoji Icon</label>
-            <input type="text"
-                   [value]="editProduct().emoji"
-                   (input)="onEditFieldInput('emoji', $event)" />
+            <input
+              type="text"
+              [value]="editProduct().emoji"
+              (input)="onEditFieldInput('emoji', $event)"
+            />
           </div>
         </div>
         <div class="admin-form__field admin-form__field--full">
           <label>Description</label>
-          <textarea rows="3"
-                    (input)="onEditFieldInput('description', $event)">
-            {{ editProduct().description }}
-          </textarea>
+          <textarea
+            [value]="editProduct()?.description || ''"
+            (input)="onEditFieldInput('description', $event)"
+            rows="4"
+          ></textarea>
+        </div>
+        <div class="admin-form__field admin-form__field--full">
+          <label>Specifications</label>
+          <textarea
+            [value]="editProduct()?.specifications || ''"
+            (input)="onEditFieldInput('specifications', $event)"
+            rows="4"
+          ></textarea>
         </div>
         <div class="admin-form__row">
           <div class="admin-form__field">
             <label>Retail Price (Rs.) <span class="required">*</span></label>
-            <input type="number"
-                   [value]="editProduct().retailPrice"
-                   (input)="onEditFieldInput('retailPrice', $event)" />
+            <input
+              type="number"
+              [value]="editProduct()?.retailPrice ?? ''"
+              (input)="onEditFieldInput('retailPrice', $event)"
+            />
           </div>
           <div class="admin-form__field">
             <label>Wholesale Price (Rs.) <span class="required">*</span></label>
-            <input type="number"
-                   [value]="editProduct().wholesalePrice"
-                   (input)="onEditFieldInput('wholesalePrice', $event)" />
+            <input
+              type="number"
+              [value]="editProduct()?.wholesalePrice ?? ''"
+              (input)="onEditFieldInput('wholesalePrice', $event)"
+            />
+          </div>
+          <div class="admin-form__field">
+            <label>Cost Price (Rs.)</label>
+            <input
+              type="number"
+              placeholder="Enter cost price"
+              [value]="editProduct()?.costPrice ?? ''"
+              (input)="onEditFieldInput('costPrice', $event)"
+            />
           </div>
           <div class="admin-form__field">
             <label>Stock Quantity</label>
-            <input type="number"
-                   [value]="editProduct().stock"
-                   (input)="onEditFieldInput('stock', $event)" />
+            <input
+              type="number"
+              [value]="editProduct()?.stock ?? ''"
+              (input)="onEditFieldInput('stock', $event)"
+            />
           </div>
         </div>
         <div class="admin-form__row">
@@ -185,32 +272,45 @@
             <label>Badge</label>
             <select (change)="onEditFieldInput('badge', $event)">
               <option value="">No Badge</option>
-              <option value="NEW"
-                [selected]="editProduct().badge === 'NEW'">New</option>
-              <option value="SALE"
-                [selected]="editProduct().badge === 'SALE'">Sale</option>
-              <option value="BEST_SELLER"
-                [selected]="editProduct().badge === 'BEST_SELLER'">
+              <option value="NEW" [selected]="editProduct().badge === 'NEW'">New</option>
+              <option value="SALE" [selected]="editProduct().badge === 'SALE'">Sale</option>
+              <option value="BEST_SELLER" [selected]="editProduct().badge === 'BEST_SELLER'">
                 Best Seller
               </option>
             </select>
           </div>
-          <div class="admin-form__field">
-            <label>Image URL</label>
-            <input type="text"
-                   [value]="editProduct().imageUrl || ''"
-                   (input)="onEditFieldInput('imageUrl', $event)" />
+          <div class="admin-form__field admin-form__field--full">
+            <label>Product Images (Cloudinary URLs)</label>
+            <div class="image-url-inputs">
+              <div
+                class="image-url-input"
+                *ngFor="
+                  let url of editProduct()?.imageUrls || [];
+                  let i = index;
+                  trackBy: trackByIndex
+                "
+              >
+                <span class="image-url-input__label">
+                  {{ i === 0 ? '⭐ Main' : 'Image ' + (i + 1) }}
+                </span>
+                <input
+                  type="text"
+                  [placeholder]="'https://res.cloudinary.com/...'"
+                  [value]="url"
+                  (blur)="onEditImageUrlInput(i, $event)"
+                  (keyup.enter)="onEditImageUrlInput(i, $event)"
+                />
+                <div class="image-url-input__preview" *ngIf="url">
+                  <img [src]="url" alt="preview" onerror="this.style.display = 'none'" />
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
       <div class="admin-modal__footer">
-        <button class="admin-btn admin-btn--outline"
-                (click)="closeEditForm()">
-          Cancel
-        </button>
-        <button class="admin-btn"
-                [disabled]="isSaving()"
-                (click)="saveEdit()">
+        <button class="admin-btn admin-btn--outline" (click)="closeEditForm()">Cancel</button>
+        <button class="admin-btn" [disabled]="isSaving()" (click)="saveEdit()">
           {{ isSaving() ? 'Saving...' : 'Save Changes' }}
         </button>
       </div>
@@ -218,27 +318,20 @@
   </div>
 
   <!-- Delete confirm modal -->
-  <div class="admin-modal-overlay"
-       *ngIf="deleteConfirmId() !== null">
+  <div class="admin-modal-overlay" *ngIf="deleteConfirmId() !== null">
     <div class="admin-modal admin-modal--sm">
       <div class="admin-modal__header">
         <h3>Confirm Delete</h3>
-        <button class="admin-modal__close"
-                (click)="cancelDelete()">✕</button>
+        <button class="admin-modal__close" (click)="cancelDelete()">✕</button>
       </div>
       <div class="admin-modal__body">
         <p class="admin-modal__confirm-text">
-          Are you sure you want to delete this product?
-          This action cannot be undone.
+          Are you sure you want to delete this product? This action cannot be undone.
         </p>
       </div>
       <div class="admin-modal__footer">
-        <button class="admin-btn admin-btn--outline"
-                (click)="cancelDelete()">
-          Cancel
-        </button>
-        <button class="admin-btn admin-btn--danger"
-                (click)="deleteProduct(deleteConfirmId()!)">
+        <button class="admin-btn admin-btn--outline" (click)="cancelDelete()">Cancel</button>
+        <button class="admin-btn admin-btn--danger" (click)="deleteProduct(deleteConfirmId()!)">
           Delete Product
         </button>
       </div>
@@ -248,9 +341,7 @@
   <!-- Products table -->
   <div class="admin-card" *ngIf="!isLoading()">
     <div class="admin-card__header">
-      <h2 class="admin-card__title">
-        Products ({{ filteredProducts.length }})
-      </h2>
+      <h2 class="admin-card__title">Products ({{ filteredProducts.length }})</h2>
     </div>
     <div class="admin-table-wrap">
       <table class="admin-table">
@@ -260,6 +351,8 @@
             <th>Category</th>
             <th>Price</th>
             <th>Stock</th>
+            <th>Cost Price</th>
+            <th>Margin</th>
             <th>Status</th>
             <th>Actions</th>
           </tr>
@@ -277,22 +370,29 @@
               </div>
             </td>
             <td>{{ product.categoryName }}</td>
-            <td>Rs. {{ product.price | number }}</td>
+            <td>Rs. {{ product.retailPrice | number }}</td>
             <td>{{ product.stock }}</td>
+            <td style="color: #6b6b80">Rs. {{ product.costPrice | number }}</td>
+            <td style="color: #065f46; font-weight: 600">
+              Rs. {{ product.retailPrice - (product.costPrice ?? 0) | number }}
+            </td>
             <td>
-              <span class="status-badge"
-                    [class]="getStatusClass(product)">
+              <span class="status-badge" [class]="getStatusClass(product)">
                 {{ getStatusLabel(product) }}
               </span>
             </td>
             <td>
               <div class="table-actions">
-                <button class="table-actions__btn table-actions__btn--edit"
-                        (click)="openEditForm(product)">
+                <button
+                  class="table-actions__btn table-actions__btn--edit"
+                  (click)="openEditForm(product)"
+                >
                   Edit
                 </button>
-                <button class="table-actions__btn table-actions__btn--delete"
-                        (click)="confirmDelete(product.id)">
+                <button
+                  class="table-actions__btn table-actions__btn--delete"
+                  (click)="confirmDelete(product.id)"
+                >
                   Delete
                 </button>
               </div>
@@ -302,5 +402,4 @@
       </table>
     </div>
   </div>
-
 </div>

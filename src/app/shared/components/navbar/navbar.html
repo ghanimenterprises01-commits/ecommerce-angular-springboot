@@ -54,11 +54,22 @@
 
         <ng-container *ngIf="authService.isLoggedIn()">
           <div class="navbar__action navbar__action--user">
-            <span class="navbar__action-top">Hello, {{authService.currentUser()?.firstName }}</span>
+            <span class="navbar__action-top"
+              >Hello, {{ authService.currentUser()?.firstName }}</span
+            >
             <span class="navbar__action-bottom">
-              {{authService.isAdmin ? 'Admin': authService.isWholesale ? 'Wholesale': 'My Account'}}
+              {{
+                authService.isAdmin ? 'Admin' : authService.isWholesale ? 'Wholesale' : 'My Account'
+              }}
             </span>
           </div>
+
+          <!-- Admin quick link -->
+          <a routerLink="/admin" class="navbar__action" *ngIf="authService.isAdmin">
+            <span class="navbar__action-top">Admin</span>
+            <span class="navbar__action-bottom">Dashboard</span>
+          </a>
+
           <button class="navbar__action navbar__logout" (click)="logout()">
             <span class="navbar__action-top">Sign</span>
             <span class="navbar__action-bottom">Out</span>
@@ -83,7 +94,7 @@
               <line x1="3" y1="6" x2="21" y2="6" />
               <path d="M16 10a4 4 0 01-8 0" />
             </svg>
-            <span class="navbar__cart-count">{{ cartService.totalItems()}}</span>
+            <span class="navbar__cart-count">{{ cartService.totalItems() }}</span>
           </div>
           <span class="navbar__cart-label">Cart</span>
         </a>
@@ -99,7 +110,7 @@
   <!-- Second navbar row — category links -->
   <nav class="subnav">
     <div class="subnav__inner">
-      <button class="subnav__all">
+      <a routerLink="/products" class="subnav__all" [class.subnav__link--active]="isAllActive()">
         <svg
           width="18"
           height="18"
@@ -113,14 +124,14 @@
           <line x1="3" y1="18" x2="21" y2="18" />
         </svg>
         All
-      </button>
+      </a>
       <a
         *ngFor="let cat of categories.slice(1)"
-        [routerLink]="cat.slug === 'deals' ? '/deals' : '/products'"
-        [queryParams]="cat.slug !== 'deals' ? { category: cat.slug } : {}"
+        [routerLink]="'/products'"
+        [queryParams]="cat.slug === 'deals' ? { badge: 'SALE' } : { category: cat.slug }"
         class="subnav__link"
         [class.subnav__link--deals]="cat.slug === 'deals'"
-        routerLinkActive="subnav__link--active"
+        [class.subnav__link--active]="isNavLinkActive(cat.slug)"
       >
         {{ cat.name }}
       </a>

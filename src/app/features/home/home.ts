@@ -66,50 +66,6 @@ export class Home implements OnInit, OnDestroy {
 
   widgets: any[] = [];
 
-  // Widget sections like Amazon
-  // widgets = [
-  //   {
-  //     title: 'Top in Kitchenware',
-  //     slug: 'kitchenware',
-  //     products: [
-  //       { id: 1, name: 'Non-Stick Pan', price: 1850, emoji: '🍳' },
-  //       { id: 2, name: 'Knife Set', price: 2800, emoji: '🔪' },
-  //       { id: 3, name: 'Cutting Board', price: 950, emoji: '🪵' },
-  //       { id: 4, name: 'Bowl Set', price: 1200, emoji: '🥣' },
-  //     ]
-  //   },
-  //   {
-  //     title: 'Popular Gift Items',
-  //     slug: 'gift-items',
-  //     products: [
-  //       { id: 5, name: 'Gift Hamper', price: 3500, emoji: '🎁' },
-  //       { id: 6, name: 'Candle Set', price: 1800, emoji: '🕯️' },
-  //       { id: 7, name: 'Photo Frame', price: 1200, emoji: '🖼️' },
-  //       { id: 8, name: 'Mug Set', price: 950, emoji: '☕' },
-  //     ]
-  //   },
-  //   {
-  //     title: 'Lighting Solutions',
-  //     slug: 'lighting',
-  //     products: [
-  //       { id: 9, name: 'LED Bulb Pack', price: 850, emoji: '💡' },
-  //       { id: 10, name: 'Ceiling Light', price: 2200, emoji: '🔆' },
-  //       { id: 11, name: 'Table Lamp', price: 1800, emoji: '🪔' },
-  //       { id: 12, name: 'Night Light', price: 650, emoji: '✨' },
-  //     ]
-  //   },
-  //   {
-  //     title: 'Aluminium Products',
-  //     slug: 'aluminium',
-  //     products: [
-  //       { id: 13, name: 'Storage Bin', price: 2400, emoji: '🪣' },
-  //       { id: 14, name: 'Aluminium Ladder', price: 8500, emoji: '🪜' },
-  //       { id: 15, name: 'Water Bucket', price: 750, emoji: '🧺' },
-  //       { id: 16, name: 'Storage Rack', price: 3200, emoji: '🗄️' },
-  //     ]
-  //   }
-  // ];
-
 
   ngOnInit() {
     this.startBannerSlide();
@@ -166,8 +122,10 @@ export class Home implements OnInit, OnDestroy {
               id: p.id,
               name: p.name,
               price: p.price,
-              emoji: p.emoji
-            }))
+              emoji: p.emoji,
+              imageUrl: p.imageUrl
+            })),
+            previewImage: products[0]?.imageUrl || null
           }
         },
         error: () => {}

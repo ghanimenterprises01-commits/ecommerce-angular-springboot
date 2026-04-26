@@ -73,7 +73,20 @@
             *ngFor="let product of widget.products"
             [routerLink]="['/products', product.id]"
           >
-            <div class="widget-product__img">{{ product.emoji }}</div>
+            <div class="widget-product__img">
+              <img
+                *ngIf="product.imageUrl"
+                [src]="product.imageUrl"
+                [alt]="product.name"
+                style="
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                  border-radius: var(--radius-sm);
+                "
+              />
+              <span *ngIf="!product.imageUrl">{{ product.emoji }}</span>
+            </div>
             <p class="widget-product__name">{{ product.name }}</p>
             <p class="widget-product__price">{{ currencySymbol }} {{ product.price | number }}</p>
           </a>
@@ -90,7 +103,12 @@
         <a routerLink="/products" class="featured__link">View all</a>
       </div>
       <div class="featured__scroller">
-        <div class="product-card" *ngFor="let product of featuredProducts()">
+        <div
+          class="product-card"
+          *ngFor="let product of featuredProducts()"
+          style="cursor: pointer"
+          [routerLink]="['/products', product.id]"
+        >
           <div class="product-card__img">
             <!-- Real image if available -->
             <img
@@ -152,7 +170,21 @@
         <a routerLink="/auth/register" class="wholesale-banner__btn">Register as Wholesale</a>
       </div>
       <div class="wholesale-banner__emojis">
-        <span>🍳</span><span>🪣</span><span>🎁</span><span>💡</span>
+        <ng-container *ngFor="let widget of widgets">
+          <img
+            *ngIf="widget?.previewImage"
+            [src]="widget.previewImage"
+            [alt]="widget.title"
+            style="
+              width: 64px;
+              height: 64px;
+              object-fit: cover;
+              border-radius: var(--radius-sm);
+              border: 2px solid rgba(255, 255, 255, 0.15);
+            "
+          />
+          <span *ngIf="!widget?.previewImage">{{ widget?.products?.[0]?.emoji }}</span>
+        </ng-container>
       </div>
     </div>
   </section>

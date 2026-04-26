@@ -25,7 +25,7 @@ export class Products implements OnInit {
   error = signal('');
   inStockOnly = signal(false);
   selectedBadges = signal<string[]>([]);
-
+  selectedBadge = signal('');
   allProducts = signal<Product[]>([]);
 
    categories = [
@@ -54,7 +54,9 @@ export class Products implements OnInit {
   ngOnInit() {
   this.route.queryParams.subscribe(params => {
   const category = params['category'] || '';
+  const badge = params['badge'] || '';
   this.selectedCategory.set(category);
+  this.selectedBadge.set(badge);
 });
 
 this.loadProducts();
@@ -86,6 +88,12 @@ this.loadProducts();
       )
     }
 
+    if (this.selectedBadge()) {
+      products = products.filter(p => 
+        p.badge === this.selectedBadge()
+      );
+    }
+
     if (this.searchQuery()) {
       const q = this.searchQuery().toLowerCase();
       products = products.filter(p => p.name.toLowerCase().includes(q));
@@ -112,6 +120,7 @@ this.loadProducts();
     switch(this.selectedSort()) {
       case 'price-asc': products.sort((a,b) => a.price - b.price); break;
       case 'price-desc': products.sort((a, b) => b.price - a.price); break;
+      case 'best': products.sort((a, b) => b.stock - a.stock); break;
       }
        return products;
   }
@@ -164,6 +173,7 @@ this.loadProducts();
 
    clearAllFilters() {
   this.selectedCategory.set('');
+  this.selectedBadge.set('');
   this.searchQuery.set('');
   this.priceRange.set(50000);
   this.inStockOnly.set(false);

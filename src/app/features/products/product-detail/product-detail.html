@@ -1,3 +1,8 @@
+<div class="detail-loading" *ngIf="isLoading()">
+  <div class="loading-spinner"></div>
+  <p>Loading product...</p>
+</div>
+
 <div class="detail" *ngIf="product()">
   <!-- Breadcrumb -->
   <div class="breadcrumb">
@@ -18,25 +23,73 @@
   <div class="container detail__main">
     <!-- Product image -->
     <div class="detail__image">
-      <div class="detail__image-main">
-        <img
-          *ngIf="product()!.imageUrl"
-          [src]="product()!.imageUrl"
-          [alt]="product()!.name"
-          class="detail__real-img"
-        />
-        <span class="detail__emoji" *ngIf="!product()!.imageUrl">
-          {{ product()!.emoji }}
-        </span>
+      <!-- Main image with zoom -->
+      <div class="detail__main-image-wrap">
+        <!-- Prev button -->
+        <button
+          class="detail__nav-btn detail__nav-btn--prev"
+          (click)="prevImage()"
+          *ngIf="allImages.length > 1"
+        >
+          ‹
+        </button>
+
+        <!-- Main image container -->
+        <div
+          class="detail__main-image"
+          [class.zoomed]="isZoomed()"
+          (mousemove)="onMouseMove($event)"
+          (mouseleave)="onMouseLeave()"
+        >
+          <!-- Real image -->
+          <img
+            *ngIf="activeImage"
+            [src]="activeImage"
+            [alt]="product()!.name"
+            class="detail__main-img"
+            [style.transform-origin]="zoomPosition().x + '% ' + zoomPosition().y + '%'"
+            [class.zoomed-img]="isZoomed()"
+          />
+
+          <!-- Emoji fallback -->
+          <span *ngIf="!activeImage" class="detail__emoji">
+            {{ product()!.emoji }}
+          </span>
+
+          <!-- Zoom hint -->
+          <div class="detail__zoom-hint" *ngIf="activeImage && !isZoomed()">🔍 Hover to zoom</div>
+        </div>
+
+        <!-- Next button -->
+        <button
+          class="detail__nav-btn detail__nav-btn--next"
+          (click)="nextImage()"
+          *ngIf="allImages.length > 1"
+        >
+          ›
+        </button>
       </div>
+
+      <!-- Thumbnail strip -->
+      <div class="detail__thumbnails" *ngIf="allImages.length > 1">
+        <div
+          class="detail__thumb"
+          *ngFor="let img of allImages; let i = index"
+          [class.active]="activeImageIndex() === i"
+          (mouseenter)="setActiveImage(i)"
+          (click)="setActiveImage(i)"
+        >
+          <img [src]="img" [alt]="'Image ' + (i + 1)" onerror="this.style.display = 'none'" />
+        </div>
+      </div>
+
+      <!-- Badges -->
       <div class="detail__badges">
-        <span class="detail__badge detail__badge--sale" *ngIf="product().badge === 'Sale'">
-          Sale
-        </span>
-        <span class="detail__badge detail__badge--new" *ngIf="product().badge === 'New'">
-          New
-        </span>
-        <span class="detail__badge detail__badge--best" *ngIf="product().badge === 'Best Seller'">
+        <span class="detail__badge detail__badge--sale" *ngIf="product()!.badge === 'SALE'"
+          >Sale</span
+        >
+        <span class="detail__badge detail__badge--new" *ngIf="product()!.badge === 'NEW'">New</span>
+        <span class="detail__badge detail__badge--best" *ngIf="product()!.badge === 'BEST_SELLER'">
           Best Seller
         </span>
       </div>
@@ -72,7 +125,7 @@
       </div>
 
       <!-- Short description -->
-      <p class="detail__desc">{{ product().description }}</p>
+      <!-- <p class="detail__desc">{{ product().description }}</p> -->
 
       <!-- Quantity -->
       <div class="detail__qty" *ngIf="product().inStock">
@@ -196,17 +249,38 @@
 
     <!-- Description tab -->
     <div class="detail__tab-content" *ngIf="selectedTab() === 'description'">
-      <p>{{ product().description }}</p>
+      <ul class="detail__desc-list" *ngIf="descriptionPoints.length > 1">
+        <li *ngFor="let point of descriptionPoints">
+          {{ point }}
+        </li>
+      </ul>
+
+      <p *ngIf="descriptionPoints.length === 1">
+        {{ descriptionPoints[0] }}
+      </p>
+
+      <p
+        *ngIf="descriptionPoints.length === 0"
+        style="color: var(--text-muted); font-style: italic"
+      >
+        No description available.
+      </p>
     </div>
 
     <!-- Specs tab -->
     <div class="detail__tab-content" *ngIf="selectedTab() === 'specs'">
-      <table class="detail__specs-table">
-        <tr *ngFor="let spec of product().specs">
+      <!-- Parsed table format -->
+      <table class="detail__specs-table" *ngIf="parsedSpecs.length > 0">
+        <tr *ngFor="let spec of parsedSpecs">
           <td class="detail__spec-label">{{ spec.label }}</td>
           <td class="detail__spec-value">{{ spec.value }}</td>
         </tr>
       </table>
+
+      <!-- No specs -->
+      <p *ngIf="parsedSpecs.length === 0" style="color: var(--text-muted); font-style: italic">
+        No specifications available.
+      </p>
     </div>
 
     <!-- Reviews tab -->
@@ -240,7 +314,7 @@
 </div>
 
 <!-- Not found -->
-<div class="detail-notfound" *ngIf="!product()">
+<div class="detail-notfound" *ngIf="!product() && !isLoading()">
   <div class="container">
     <span>🔍</span>
     <h2>Product not found</h2>

@@ -4,7 +4,7 @@
     <div class="container catalog__header-inner">
       <div>
         <h1 class="catalog__title">
-          {{ selectedCategory() ? (categories | slice:1).find(c => c.slug === selectedCategory())?.name : 'All Products' }}
+          {{ selectedBadge() === 'SALE' ? "Today's Deals" : selectedCategory() ? categories.find(c => c.slug === selectedCategory())?.name : 'All Products' }}
         </h1>
         <p class="catalog__count">{{ productList.length }} products found</p>
       </div>

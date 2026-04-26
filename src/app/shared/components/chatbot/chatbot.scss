@@ -7,6 +7,7 @@
   flex-direction: column;
   align-items: flex-end;
   gap: 12px;
+  pointer-events: none;
 
   // Toggle button
   &__toggle {
@@ -24,6 +25,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.88rem;
     font-weight: 600;
+    pointer-events: all;
 
     &:hover {
       background: var(--primary-light);
@@ -54,6 +56,7 @@
     overflow: hidden;
     border: 1px solid var(--border);
     animation: slideUp 0.3s ease;
+    pointer-events: all;
 
     @media (max-width: 480px) {
       width: calc(100vw - 32px);

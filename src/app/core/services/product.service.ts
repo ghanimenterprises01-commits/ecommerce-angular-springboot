@@ -1,7 +1,7 @@
 import { Injectable, signal } from "@angular/core";
 import { ApiService } from "./api.service";
 import { Observable } from "rxjs";
-import { Product, ProductRequest } from "../models/product.model";
+import { AdminProduct, Product, ProductRequest } from "../models/product.model";
 import { Category } from "../models/category.model";
 
 
@@ -45,4 +45,8 @@ export class ProductService {
     getAllCategories(): Observable<Category[]> {
         return this.api.get<Category[]>('/categories');
     }
+
+    getAdminProducts(): Observable<AdminProduct[]> {
+  return this.api.get<AdminProduct[]>('/admin/products');
+}
 }
