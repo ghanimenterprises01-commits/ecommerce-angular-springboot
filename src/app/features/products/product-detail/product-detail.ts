@@ -1,10 +1,13 @@
-import { CommonModule } from '@angular/common';
-import { Component, linkedSignal, OnInit, signal } from '@angular/core';
+import { CommonModule, ViewportScroller } from '@angular/common';
+import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/environment';
 import { Product } from '../../../core/models/product.model';
 import { ProductService } from '../../../core/services/product.service';
 import { CartService } from '../../../core/services/cart.service';
+import { SeoService } from '../../../core/services/seo.service';
+import { optimizeImageUrl } from '../../../core/utils/image.utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product-detail',
@@ -26,8 +29,11 @@ export class ProductDetail implements OnInit{
   isZoomed = signal(false);
   zoomPosition = signal({x: 50, y: 50});
 
+  @ViewChild('relatedTrack')
+  relatedTrack!: ElementRef;
 
-  constructor(private route: ActivatedRoute, private productService: ProductService, private cartService: CartService) {}
+
+  constructor(private route: ActivatedRoute, private productService: ProductService, private cartService: CartService, private seo: SeoService) {}
 
   ngOnInit(){
     this.route.params.subscribe(params => {
@@ -45,6 +51,14 @@ export class ProductDetail implements OnInit{
         this.product.set(product);
         this.isLoading.set(false);
         this.loadRelated(product.categorySlug, id);
+
+        this.seo.updateProductMeta({
+             name: product.name,
+        description: product.description,
+        price: product.price,
+        imageUrl: product.imageUrl,
+        categoryName: product.categoryName
+        });
       },
       error: () => {
         this.error.set('Product not found');
@@ -206,5 +220,16 @@ export class ProductDetail implements OnInit{
   this.isZoomed.set(false);
  }
 
+  optimizeImage(url: string | null, width: number = 800): string {
+    return optimizeImageUrl(url, width);
+  }
 
+  scrollRelated(direction: number) {  // 👈 add here, with other methods
+    const track = this.relatedTrack?.nativeElement;
+    if (!track) return;
+    track.scrollBy({
+      left: direction * 280,
+      behavior: 'smooth'
+    });
+  }
 }

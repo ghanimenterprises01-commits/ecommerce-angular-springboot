@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { Product } from '../../core/models/product.model';
 import { ApiService } from '../../core/services/api.service';
 import { CartService } from '../../core/services/cart.service';
+import { optimizeImageUrl } from '../../core/utils/image.utils';
 
 @Component({
   selector: 'app-search',
@@ -65,4 +66,9 @@ export class Search implements OnInit{
       category: product.categoryName
     });
   }
+
+  optimizeImage(url: string | null, width: number = 400): string {
+    return optimizeImageUrl(url, width);
+  }
+
 }

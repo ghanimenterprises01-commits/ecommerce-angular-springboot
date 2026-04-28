@@ -1,10 +1,12 @@
-import { Component, signal, OnInit, OnDestroy } from '@angular/core';
+import { Component, signal, OnInit, OnDestroy, inject, PLATFORM_ID } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Product } from '../../core/models/product.model';
 import { Category } from '../../core/models/category.model';
 import { ProductService } from '../../core/services/product.service';
+import { SeoService } from '../../core/services/seo.service';
+import { optimizeImageUrl } from '../../core/utils/image.utils';
 
 @Component({
   selector: 'app-home',
@@ -14,6 +16,7 @@ import { ProductService } from '../../core/services/product.service';
   styleUrl: './home.scss'
 })
 export class Home implements OnInit, OnDestroy {
+  private platformId = inject(PLATFORM_ID);
   currencySymbol = environment.currencySymbol;
 
   // Banner slider
@@ -23,7 +26,7 @@ export class Home implements OnInit, OnDestroy {
   categories = signal<Category[]>([]);
   isLoadingProducts = signal(true);
 
-  constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService, private seo: SeoService) {}
 
   banners = [
     {
@@ -68,12 +71,30 @@ export class Home implements OnInit, OnDestroy {
 
 
   ngOnInit() {
-    this.startBannerSlide();
-    this.loadProducts();
-    this.loadCategories();
-    this.loadWidgets();
-  }
+    // SEO runs on both server and browser
+    // This is what makes SSR valuable for SEO
+    this.seo.updateMeta({
+      title: 'Quality Home Products in Sri Lanka',
+      description: 'Shop kitchenware, aluminium, plastic, gift items, umbrellas and lighting at best prices in Sri Lanka. Free delivery over Rs. 5000.',
+      keywords: 'kitchenware Sri Lanka, aluminium products, gift items, umbrellas, lighting, wholesale retail'
+    });
 
+    // Banner slider only in browser
+    // setInterval causes SSR stabilization timeout
+    if (isPlatformBrowser(this.platformId)) {
+      this.startBannerSlide();
+    }
+
+    // Widget structure initializes on both server and browser
+    // But API calls only in browser
+    this.loadWidgets();
+
+    // Products and categories only in browser
+    if (isPlatformBrowser(this.platformId)) {
+      this.loadProducts();
+      this.loadCategories();
+    }
+  }
   loadProducts() {
     this.productService.getAllProducts().subscribe({
       next: (products) => {
@@ -110,7 +131,16 @@ export class Home implements OnInit, OnDestroy {
       'Aluminium Products'
     ];
 
-    this.widgets = [];
+    // Initialize with safe empty objects first — not empty array
+    this.widgets = slugs.map((slug, index) => ({
+      title: titles[index],
+      slug: slug,
+      products: [],
+      previewImage: null
+    }));
+
+      // Skip API calls during SSR
+  if (!isPlatformBrowser(this.platformId)) return;
 
     slugs.forEach((slug, index) => {
       this.productService.getProductsByCategory(slug).subscribe({
@@ -144,4 +174,9 @@ export class Home implements OnInit, OnDestroy {
   addToCart(product: any) {
     console.log('Added to cart:', product);
   }
+
+   optimizeImage(url: string | null, width: number = 400): string {
+    return optimizeImageUrl(url, width);
+  }
+
 }

@@ -113,7 +113,7 @@
             <!-- Real image if available -->
             <img
               *ngIf="product.imageUrl"
-              [src]="product.imageUrl"
+              [src]="optimizeImage(product.imageUrl, 400)"
               [alt]="product.name"
               class="product-card__real-img"
             />
@@ -173,7 +173,7 @@
         <ng-container *ngFor="let widget of widgets">
           <img
             *ngIf="widget?.previewImage"
-            [src]="widget.previewImage"
+            [src]="optimizeImage(widget.previewImage, 200)"
             [alt]="widget.title"
             style="
               width: 64px;

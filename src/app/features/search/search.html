@@ -35,7 +35,13 @@
     <div class="search-results" *ngIf="results().length > 0 && !isLoading()">
       <div class="pcard" *ngFor="let product of results()">
         <a [routerLink]="['/products', product.id]" class="pcard__img">
-          <span class="pcard__emoji">{{ product.emoji }}</span>
+          <img
+            *ngIf="product.imageUrl"
+            [src]="optimizeImage(product.imageUrl, 400)"
+            [alt]="product.name"
+            class="pcard__real-img"
+          />
+          <span *ngIf="product.imageUrl" class="pcard__emoji">{{ product.emoji }}</span>
           <span
             class="pcard__badge"
             *ngIf="product.badge"

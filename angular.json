@@ -30,8 +30,20 @@
                 "input": "public"
               }
             ],
-            "styles": ["src/styles.scss"]
-          },
+            "styles": [
+              "src/styles.scss"
+            ],
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "security": {
+              "allowedHosts": []
+            },
+            "ssr": {
+              "entry": "src/server.ts"
+            }, "polyfills": [
+                  "zone.js"
+                ]
+            },
           "configurations": {
             "production": {
               "budgets": [
@@ -46,7 +58,17 @@
                   "maximumError": "16kB"
                 }
               ],
-              "outputHashing": "all"
+                "outputHashing": "all",
+                "optimization": {
+                  "scripts": true,
+                  "styles": {
+                    "minify": true,
+                    "inlineCritical": true
+                  },
+                  "fonts": true
+                },
+                "extractLicenses": false,
+                "sourceMap": false
             },
             "development": {
               "optimization": false,

@@ -115,6 +115,7 @@
     gap: 8px;
     flex-wrap: wrap;
     margin-bottom: 16px;
+    scroll-behavior: smooth;
   }
 
   &__thumb {
@@ -473,28 +474,220 @@
     font-size: 0.9rem;
   }
 
+  // ── Related Products Section ──────────────────────────────────────────────
   &__related {
-    margin-top: 8px;
+    padding: 40px 0 60px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    margin-top: 40px;
+  }
+}
 
-    &-title {
-      font-family: 'Inter', sans-serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--text-primary);
-      margin-bottom: 20px;
+// ── Related section standalone classes ───────────────────────────────────────
+
+.related__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.related__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  position: relative;
+  padding-bottom: 8px;
+
+  &::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 40px;
+    height: 2px;
+    background: var(--accent);
+    border-radius: 2px;
+  }
+}
+
+.related__see-all {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-decoration: none;
+  transition: var(--transition);
+
+  &:hover {
+    gap: 8px;
+    color: var(--primary);
+  }
+}
+
+.related__scroll-wrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.related__nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 40px;
+  height: 40px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  font-size: 1.6rem;
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
+  transition: var(--transition);
+  color: var(--text-primary);
+  line-height: 1;
+  flex-shrink: 0;
+
+  &:hover {
+    background: var(--primary);
+    color: white;
+    border-color: var(--primary);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  &--prev {
+    left: -20px;
+  }
+  &--next {
+    right: -20px;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.related__track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+  padding: 8px 4px 12px;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// ── Related Product Card (replaces old .rcard) ────────────────────────────────
+
+.rcard {
+  flex-shrink: 0;
+  width: 200px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  text-decoration: none;
+  transition: var(--transition);
+  scroll-snap-align: start;
+  display: flex;
+  flex-direction: column;
+
+  &:hover {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    transform: translateY(-3px);
+    border-color: var(--accent);
+  }
+
+  &__img {
+    position: relative;
+    height: 160px;
+    background: var(--surface-2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  &__real-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+
+    .rcard:hover & {
+      transform: scale(1.05);
     }
+  }
 
-    &-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
+  &__emoji {
+    font-size: 3.5rem;
+  }
 
-      @media (max-width: 768px) {
-        grid-template-columns: repeat(2, 1fr);
-      }
+  &__badge {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    background: #fee2e2;
+    color: #c0392b;
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 100px;
+  }
+
+  &__body {
+    padding: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+
+  &__name {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-primary);
+    line-height: 1.3;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  &__price {
+    margin-top: auto;
+  }
+
+  &__price-now {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: var(--primary);
+  }
+
+  &__stock {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #065f46;
+
+    &--out {
+      color: #c0392b;
     }
   }
 }
+
+// ── Description list ──────────────────────────────────────────────────────────
 
 .detail__desc-list {
   list-style: none;
@@ -522,6 +715,8 @@
   }
 }
 
+// ── Loading spinner ───────────────────────────────────────────────────────────
+
 .detail-loading {
   text-align: center;
   padding: 100px 20px;
@@ -548,6 +743,8 @@
   }
 }
 
+// ── Breadcrumb ────────────────────────────────────────────────────────────────
+
 .breadcrumb {
   background: var(--surface);
   border-bottom: 1px solid var(--border);
@@ -564,6 +761,7 @@
       color: var(--accent);
       text-decoration: none;
       transition: var(--transition);
+
       &:hover {
         text-decoration: underline;
       }
@@ -580,45 +778,7 @@
   }
 }
 
-.rcard {
-  background: var(--surface);
-  border-radius: var(--radius-md);
-  border: 1px solid var(--border);
-  overflow: hidden;
-  text-decoration: none;
-  transition: var(--transition);
-  display: block;
-
-  &:hover {
-    box-shadow: var(--shadow-md);
-    transform: translateY(-3px);
-  }
-
-  &__img {
-    height: 120px;
-    background: var(--surface-2);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 3rem;
-  }
-
-  &__body {
-    padding: 12px;
-  }
-  &__name {
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--text-primary);
-    margin-bottom: 6px;
-    line-height: 1.3;
-  }
-  &__price {
-    font-size: 0.9rem;
-    font-weight: 700;
-    color: var(--primary);
-  }
-}
+// ── Not found ─────────────────────────────────────────────────────────────────
 
 .detail-notfound {
   text-align: center;
@@ -629,11 +789,13 @@
     display: block;
     margin-bottom: 20px;
   }
+
   h2 {
     font-size: 1.5rem;
     margin-bottom: 8px;
     color: var(--text-primary);
   }
+
   p {
     color: var(--text-secondary);
     margin-bottom: 24px;

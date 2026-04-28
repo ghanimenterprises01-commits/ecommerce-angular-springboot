@@ -2,6 +2,7 @@ import { Injectable, signal, computed } from '@angular/core';
 import { Router } from '@angular/router';
 import { OrderService, CartItem, OrderRequest } from './order.service';
 import { AuthService } from './auth.service';
+import { getItem, removeItem, setItem } from '../utils/storage.utils';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class CartService {
   }
 
   private loadFromStorage() {
-    const saved = localStorage.getItem('cart');
+    const saved = getItem('cart');
     if (saved) {
       try {
         this.cartItems.set(JSON.parse(saved));
@@ -49,10 +50,7 @@ export class CartService {
   }
 
   private saveToStorage() {
-    localStorage.setItem(
-      'cart',
-      JSON.stringify(this.cartItems())
-    );
+    setItem('cart', JSON.stringify(this.cartItems()));
   }
 
   addToCart(item: CartItem) {
@@ -95,7 +93,7 @@ export class CartService {
 
   clearCart() {
     this.cartItems.set([]);
-    localStorage.removeItem('cart');
+    removeItem('cart');
   }
 
   placeOrder(

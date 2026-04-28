@@ -1,9 +1,11 @@
-import { Injectable, signal } from "@angular/core";
+import { inject, Injectable, PLATFORM_ID, signal } from "@angular/core";
 import { Router } from "@angular/router";
 import { environment } from "../../../environments/environment";
 import { HttpClient } from "@angular/common/http";
 import { AuthResponse, LoginRequest, RegisterRequest } from "../models/auth.model";
 import { Observable, tap } from "rxjs";
+import { isPlatformBrowser } from "@angular/common";
+import { getItem, removeItem, setItem } from "../utils/storage.utils";
 
 
 
@@ -31,9 +33,9 @@ export class AuthService {
         this.loadFromStorage();
     }
 
-    private loadFromStorage() {
-        const token = localStorage.getItem('token');
-        const userStr = localStorage.getItem('user');
+    private loadFromStorage() {  
+        const token = getItem('token');
+        const userStr = getItem('user');
         if (token && userStr) {
             try {
                 const user = JSON.parse(userStr);
@@ -42,7 +44,7 @@ export class AuthService {
             } catch {
                 this.logout();
             }
-        }
+        }   
     }
 
     login(request: LoginRequest) : Observable<AuthResponse> {
@@ -53,9 +55,9 @@ export class AuthService {
             request
         ).pipe(
             tap(response => {
-                localStorage.setItem('token', response.token);
-                localStorage.setItem('role', response.role);
-                localStorage.setItem('user', JSON.stringify({
+                setItem('token', response.token);
+                setItem('role', response.role);
+                setItem('user', JSON.stringify({
                     firstName: response.firstName,
                     lastName: response.lastName,
                     email: response.email,
@@ -84,17 +86,17 @@ export class AuthService {
      
 
      logout() {
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        localStorage.removeItem('user');
-        localStorage.removeItem('cart');
+        removeItem('token');
+        removeItem('role');
+        removeItem('user');
+        removeItem('cart');
         this.currentUser.set(null);
         this.isLoggedIn.set(false);
         this.router.navigate(['/']);
      }
 
      get role(): string {
-        return localStorage.getItem('role') || '';
+        return getItem('role') || '';
      }
 
      get isAdmin(): boolean {

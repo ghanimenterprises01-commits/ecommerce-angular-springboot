@@ -154,7 +154,7 @@
           <a [routerLink]="['/products', product.id]" class="pcard__img">
             <img
               *ngIf="product.imageUrl"
-              [src]="product.imageUrl"
+              [src]="optimizeImage(product.imageUrl, 400)"
               [alt]="product.name"
               class="pcard__real-img"
             />
@@ -193,7 +193,15 @@
       <div class="products-list" *ngIf="productList.length > 0 && viewMode() === 'list'">
         <div class="lcard" *ngFor="let product of productList">
           <a [routerLink]="['/products', product.id]" class="lcard__img">
-            <span>{{ product.emoji }}</span>
+            <img
+              *ngIf="product.imageUrl"
+              [src]="optimizeImage(product.imageUrl, 200)"
+              [alt]="product.name"
+              class="pcard__real-img"
+            />
+            <span class="pcard__emoji" *ngIf="!product.imageUrl">
+              {{ product.emoji }}
+            </span>
           </a>
           <div class="lcard__body">
             <p class="lcard__category">{{ product.categoryName | titlecase }}</p>

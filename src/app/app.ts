@@ -1,8 +1,8 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Navbar } from './shared/components/navbar/navbar';
 import { Footer } from './shared/components/footer/footer';
-import { CommonModule } from '@angular/common';
+import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs';
 import { Chatbot } from './shared/components/chatbot/chatbot';
 import { AuthService } from './core/services/auth.service';
@@ -95,6 +95,8 @@ export class App {
 
   private authRoutes = ['/auth/login', '/auth/register', '/admin'];
 
+  private platformId = inject(PLATFORM_ID);
+
   constructor(private router: Router, public authService: AuthService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
@@ -103,6 +105,11 @@ export class App {
         event.urlAfterRedirects.startsWith(route)
       );
       this.showLayout.set(!isAuthRoute);
+
+       // Scroll to top on every navigation
+    if (isPlatformBrowser(this.platformId)) {
+      window.scrollTo({ top: 0, behavior: 'instant' });
+    }
     })
   }
 }

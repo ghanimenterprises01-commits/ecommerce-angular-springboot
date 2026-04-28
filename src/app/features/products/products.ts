@@ -5,6 +5,8 @@ import { environment } from '../../../environments/environment';
 import { Product } from '../../core/models/product.model';
 import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';  
+import { SeoService } from '../../core/services/seo.service';
+import { optimizeImageUrl } from '../../core/utils/image.utils';
 
 @Component({
   selector: 'app-products',
@@ -49,9 +51,14 @@ export class Products implements OnInit {
 
   
 
-  constructor(private route: ActivatedRoute, private ProductService: ProductService, private cartService: CartService) {}
+  constructor(private route: ActivatedRoute, private ProductService: ProductService, private cartService: CartService, private seo: SeoService) {}
 
   ngOnInit() {
+    this.seo.updateMeta({
+    title: 'All Products',
+    description: 'Browse all products at Ghanim Enterprises — kitchenware, aluminium, plastic, gift items, umbrellas and lighting.',
+    keywords: 'buy household products Sri Lanka, kitchenware, aluminium, plastic'
+    });
   this.route.queryParams.subscribe(params => {
   const category = params['category'] || '';
   const badge = params['badge'] || '';
@@ -180,5 +187,9 @@ this.loadProducts();
   this.selectedBadges.set([]);
   this.selectedSort.set('default');
 }
+
+  optimizeImage(url: string | null, width: number = 400): string {
+    return optimizeImageUrl(url, width);
+  }
 
 }

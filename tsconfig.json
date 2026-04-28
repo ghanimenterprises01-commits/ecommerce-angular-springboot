@@ -3,18 +3,30 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
-    "strict": true,
-    "noImplicitOverride": true,
-    "noPropertyAccessFromIndexSignature": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
-    "skipLibCheck": true,
-    "isolatedModules": true,
-    "experimentalDecorators": true,
-    "importHelpers": true,
-    "target": "ES2022",
-    "module": "preserve"
-  },
+      "strict": true,
+      "noImplicitOverride": true,
+      "noPropertyAccessFromIndexSignature": true,
+      "noImplicitReturns": true,
+      "noFallthroughCasesInSwitch": true,
+      "skipLibCheck": true,
+      "isolatedModules": true,
+      "experimentalDecorators": true,
+      "importHelpers": true,
+      "target": "ES2022",
+      "module": "ES2022",
+      "moduleResolution": "bundler",
+      "useDefineForClassFields": false,
+      "lib": [
+        "ES2022",
+        "dom",
+        "dom.iterable"
+      ],
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "outDir": "./out-tsc",
+      "sourceMap": true,
+      "declaration": false
+    },
   "angularCompilerOptions": {
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,

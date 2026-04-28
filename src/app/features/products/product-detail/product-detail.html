@@ -44,7 +44,7 @@
           <!-- Real image -->
           <img
             *ngIf="activeImage"
-            [src]="activeImage"
+            [src]="optimizeImage(activeImage, 800)"
             [alt]="product()!.name"
             class="detail__main-img"
             [style.transform-origin]="zoomPosition().x + '% ' + zoomPosition().y + '%'"
@@ -79,7 +79,11 @@
           (mouseenter)="setActiveImage(i)"
           (click)="setActiveImage(i)"
         >
-          <img [src]="img" [alt]="'Image ' + (i + 1)" onerror="this.style.display = 'none'" />
+          <img
+            [src]="optimizeImage(img, 150)"
+            [alt]="'Image ' + (i + 1)"
+            onerror="this.style.display = 'none'"
+          />
         </div>
       </div>
 
@@ -298,17 +302,69 @@
     </div>
   </div>
 
-  <!-- Related products -->
-  <div class="container detail__related" *ngIf="relatedProducts.length > 0">
-    <h2 class="detail__related-title">Related Products</h2>
-    <div class="detail__related-grid">
-      <a class="rcard" *ngFor="let rp of relatedProducts()" [routerLink]="['/products', rp.id]">
-        <div class="rcard__img">{{ rp.emoji }}</div>
-        <div class="rcard__body">
-          <p class="rcard__name">{{ rp.name }}</p>
-          <p class="rcard__price">{{ currencySymbol }} {{ rp.price | number }}</p>
+  <!-- Related Products -->
+  <div class="detail__related" *ngIf="relatedProducts().length > 0">
+    <div class="container">
+      <div class="related__header">
+        <h2 class="related__title">Related Products</h2>
+        <a
+          [routerLink]="['/products']"
+          [queryParams]="{ category: product()!.categorySlug }"
+          class="related__see-all"
+        >
+          See all in {{ product()!.categoryName }}
+          <svg
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
+          </svg>
+        </a>
+      </div>
+
+      <!-- Scrollable row -->
+      <div class="related__scroll-wrap">
+        <button class="related__nav related__nav--prev" (click)="scrollRelated(-1)" #relatedPrev>
+          ‹
+        </button>
+
+        <div class="related__track" #relatedTrack>
+          <a class="rcard" *ngFor="let rp of relatedProducts()" [routerLink]="['/products', rp.id]">
+            <!-- Image -->
+            <div class="rcard__img">
+              <img
+                *ngIf="rp.imageUrl"
+                [src]="optimizeImage(rp.imageUrl, 300)"
+                [alt]="rp.name"
+                class="rcard__real-img"
+              />
+              <span *ngIf="!rp.imageUrl" class="rcard__emoji">
+                {{ rp.emoji }}
+              </span>
+              <span class="rcard__badge" *ngIf="rp.badge === 'SALE'"> Sale </span>
+            </div>
+
+            <!-- Info -->
+            <div class="rcard__body">
+              <p class="rcard__name">{{ rp.name }}</p>
+              <div class="rcard__price">
+                <span class="rcard__price-now"> Rs. {{ rp.price | number }} </span>
+              </div>
+              <div class="rcard__stock" [class.rcard__stock--out]="!rp.inStock">
+                {{ rp.inStock ? 'In Stock' : 'Out of Stock' }}
+              </div>
+            </div>
+          </a>
         </div>
-      </a>
+
+        <button class="related__nav related__nav--next" (click)="scrollRelated(1)" #relatedNext>
+          ›
+        </button>
+      </div>
     </div>
   </div>
 </div>
