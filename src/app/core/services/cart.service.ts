@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { OrderService, CartItem, OrderRequest } from './order.service';
 import { AuthService } from './auth.service';
 import { getItem, removeItem, setItem } from '../utils/storage.utils';
+import { AnalyticsService } from './analytics.service';
 
 @Injectable({
   providedIn: 'root'
@@ -33,7 +34,8 @@ export class CartService {
   constructor(
     private orderService: OrderService,
     private authService: AuthService,
-    private router: Router
+    private router: Router,
+    private analytics: AnalyticsService
   ) {
     this.loadFromStorage();
   }
@@ -69,6 +71,10 @@ export class CartService {
       this.cartItems.update(items => [...items, item]);
     }
     this.saveToStorage();
+
+     // Track the event
+    this.analytics.trackAddToCart(item.name, item.price);
+
   }
 
   removeFromCart(id: number) {
@@ -128,6 +134,10 @@ export class CartService {
       next: (order) => {
         this.isPlacingOrder.set(false);
         this.orderSuccess.set(order.id);
+
+        // Track purchase
+        this.analytics.trackPurchase(order.id, order.total);
+
         this.clearCart();
         this.router.navigate(['/order-success', order.id]);
       },

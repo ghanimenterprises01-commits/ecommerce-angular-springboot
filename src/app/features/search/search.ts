@@ -6,6 +6,7 @@ import { Product } from '../../core/models/product.model';
 import { ApiService } from '../../core/services/api.service';
 import { CartService } from '../../core/services/cart.service';
 import { optimizeImageUrl } from '../../core/utils/image.utils';
+import { AnalyticsService } from '../../core/services/analytics.service';
 
 @Component({
   selector: 'app-search',
@@ -25,7 +26,8 @@ export class Search implements OnInit{
   constructor(
     private route: ActivatedRoute,
     private api: ApiService,
-    private cartService: CartService
+    private cartService: CartService,
+    private analytics: AnalyticsService
   ) {}
 
   ngOnInit(){
@@ -37,6 +39,7 @@ export class Search implements OnInit{
   }
 
   search(query: string) {
+    this.analytics.trackSearch(query);
     this.isLoading.set(true);
     this.error.set('');
     this.results.set([]);

@@ -6,6 +6,7 @@ import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { filter } from 'rxjs';
 import { Chatbot } from './shared/components/chatbot/chatbot';
 import { AuthService } from './core/services/auth.service';
+import { AnalyticsService } from './core/services/analytics.service';
 
 @Component({
   selector: 'app-root',
@@ -97,7 +98,7 @@ export class App {
 
   private platformId = inject(PLATFORM_ID);
 
-  constructor(private router: Router, public authService: AuthService) {
+  constructor(private router: Router, public authService: AuthService,  private analytics: AnalyticsService) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
