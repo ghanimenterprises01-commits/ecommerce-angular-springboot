@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
+import { ToastService } from '../../core/services/toast.service';
 
 @Component({
   selector: 'app-cart',
@@ -24,7 +25,8 @@ export class Cart {
 
   constructor(
     public cartService: CartService,
-    public authService: AuthService
+    public authService: AuthService,
+    private toast: ToastService
   ) {}
 
   get subtotal() { return this.cartService.subtotal(); }
@@ -85,7 +87,7 @@ export class Cart {
     } else {
       this.promoApplied.set(false);
       this.promoDiscount.set(0);
-      alert('Invalid promo code. Try SAVE10 or FLAT500');
+      this.toast.error('Invalid promo code. Try SAVE10 or FLAT500');
     }
   }
 

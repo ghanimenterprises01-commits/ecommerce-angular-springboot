@@ -4,6 +4,7 @@ import { OrderService, CartItem, OrderRequest } from './order.service';
 import { AuthService } from './auth.service';
 import { getItem, removeItem, setItem } from '../utils/storage.utils';
 import { AnalyticsService } from './analytics.service';
+import { ToastService } from './toast.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,8 @@ export class CartService {
     private orderService: OrderService,
     private authService: AuthService,
     private router: Router,
-    private analytics: AnalyticsService
+    private analytics: AnalyticsService,
+    private toast: ToastService
   ) {
     this.loadFromStorage();
   }
@@ -72,6 +74,11 @@ export class CartService {
     }
     this.saveToStorage();
 
+      // Show toast instead of alert
+    this.toast.success(
+      `${item.name} added to cart`,
+      item.emoji || '🛒'
+    );
      // Track the event
     this.analytics.trackAddToCart(item.name, item.price);
 
@@ -145,6 +152,9 @@ export class CartService {
         this.isPlacingOrder.set(false);
         this.orderError.set(
           err.error?.message || 'Failed to place order. Please try again.'
+        );
+         this.toast.error(
+          err.error?.message || 'Failed to place order'
         );
       }
     });

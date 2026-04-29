@@ -244,13 +244,17 @@
     }
   }
 
+  // UPDATED: hamburger with animation + fixes
   &__hamburger {
     display: none;
     flex-direction: column;
     gap: 5px;
     background: none;
+    border: none; // ADDED
+    cursor: pointer; // ADDED
     padding: 4px;
     margin-left: auto;
+    z-index: 1001; // ADDED
 
     span {
       display: block;
@@ -258,10 +262,106 @@
       height: 2px;
       background: white;
       border-radius: 2px;
+      transition: all 0.3s ease; // ADDED
+      transform-origin: center; // ADDED
+    }
+
+    // ADDED: animated X state
+    &.active span:nth-child(1) {
+      transform: translateY(7px) rotate(45deg);
+    }
+    &.active span:nth-child(2) {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+    &.active span:nth-child(3) {
+      transform: translateY(-7px) rotate(-45deg);
     }
 
     @media (max-width: 768px) {
       display: flex;
+    }
+  }
+
+  // ADDED: mobile slide-in menu
+  &__mobile-menu {
+    position: fixed;
+    top: 0;
+    left: -100%;
+    width: 80%;
+    max-width: 320px;
+    height: 100vh;
+    background: #131921;
+    z-index: 1000;
+    padding: 80px 0 24px;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    display: flex;
+    flex-direction: column;
+
+    &.open {
+      left: 0;
+    }
+  }
+
+  // ADDED: mobile menu links
+  &__mobile-link {
+    display: block;
+    padding: 14px 24px;
+    color: rgba(255, 255, 255, 0.8);
+    text-decoration: none;
+    font-size: 0.95rem;
+    font-weight: 500;
+    font-family: 'Inter', sans-serif;
+    border: none;
+    background: none;
+    width: 100%;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.2s;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: white;
+      padding-left: 32px;
+    }
+
+    &--deals {
+      color: #c9a84c;
+      font-weight: 700;
+    }
+
+    &--danger {
+      color: rgba(255, 100, 100, 0.8);
+      &:hover {
+        color: #ff6464;
+      }
+    }
+  }
+
+  // ADDED: mobile menu divider
+  &__mobile-divider {
+    height: 1px;
+    background: rgba(255, 255, 255, 0.08);
+    margin: 12px 24px;
+  }
+
+  // ADDED: dark overlay behind mobile menu
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+
+    @media (min-width: 769px) {
+      display: none;
+    }
+  }
+
+  // ADDED: hide subnav on mobile
+  &__subnav {
+    @media (max-width: 768px) {
+      display: none;
     }
   }
 }
@@ -326,6 +426,7 @@
       border-color: white;
       color: white;
     }
+
     &--active {
       border-color: white;
       color: white;

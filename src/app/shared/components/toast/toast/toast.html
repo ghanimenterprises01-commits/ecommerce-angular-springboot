@@ -1,0 +1,13 @@
+<div class="toast-container">
+  <div
+    class="toast"
+    *ngFor="let toast of toasts()"
+    [class.toast--success]="toast.type === 'success'"
+    [class.toast--error]="toast.type === 'error'"
+    [class.toast--info]="toast.type === 'info'"
+  >
+    <span class="toast__emoji">{{ toast.emoji }}</span>
+    <span class="toast__message">{{ toast.message }}</span>
+    <button class="toast__close" (click)="remove(toast.id)">✕</button>
+  </div>
+</div>

@@ -1,4 +1,4 @@
-import { Component, inject, PLATFORM_ID, signal } from '@angular/core';
+import { Component, inject, PLATFORM_ID, signal, ViewContainerRef } from '@angular/core';
 import { NavigationEnd, Router, RouterLink, RouterOutlet } from '@angular/router';
 import { Navbar } from './shared/components/navbar/navbar';
 import { Footer } from './shared/components/footer/footer';
@@ -7,6 +7,7 @@ import { filter } from 'rxjs';
 import { Chatbot } from './shared/components/chatbot/chatbot';
 import { AuthService } from './core/services/auth.service';
 import { AnalyticsService } from './core/services/analytics.service';
+import { ToastService } from './core/services/toast.service';
 
 @Component({
   selector: 'app-root',
@@ -98,7 +99,7 @@ export class App {
 
   private platformId = inject(PLATFORM_ID);
 
-  constructor(private router: Router, public authService: AuthService,  private analytics: AnalyticsService) {
+  constructor(private router: Router, public authService: AuthService,  private analytics: AnalyticsService, private toastService: ToastService, private vcr: ViewContainerRef) {
     this.router.events.pipe(
       filter(event => event instanceof NavigationEnd)
     ).subscribe((event: any) => {
@@ -112,5 +113,9 @@ export class App {
       window.scrollTo({ top: 0, behavior: 'instant' });
     }
     })
+  }
+
+  ngOnInit() {
+    this.toastService.init(this.vcr);
   }
 }

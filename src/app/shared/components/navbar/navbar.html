@@ -101,10 +101,70 @@
       </div>
 
       <!-- Mobile hamburger -->
-      <button class="navbar__hamburger" (click)="toggleMenu()">
+      <button class="navbar__hamburger" [class.active]="menuOpen()" (click)="toggleMenu()">
         <span></span><span></span><span></span>
       </button>
     </div>
+    <!-- Mobile menu -->
+    <div class="navbar__mobile-menu" [class.open]="menuOpen()">
+      <!-- Mobile nav links -->
+      <a routerLink="/" class="navbar__mobile-link" (click)="menuOpen.set(false)"> Home </a>
+      <a routerLink="/products" class="navbar__mobile-link" (click)="menuOpen.set(false)">
+        All Products
+      </a>
+      <a
+        *ngFor="let cat of categories.slice(1, -1)"
+        [routerLink]="'/products'"
+        [queryParams]="{ category: cat.slug }"
+        class="navbar__mobile-link"
+        (click)="menuOpen.set(false)"
+      >
+        {{ cat.name }}
+      </a>
+      <a
+        routerLink="/products"
+        [queryParams]="{ badge: 'SALE' }"
+        class="navbar__mobile-link navbar__mobile-link--deals"
+        (click)="menuOpen.set(false)"
+      >
+        Today's Deals
+      </a>
+
+      <!-- Auth links -->
+      <div class="navbar__mobile-divider"></div>
+
+      <ng-container *ngIf="!authService.isLoggedIn()">
+        <a routerLink="/auth/login" class="navbar__mobile-link" (click)="menuOpen.set(false)">
+          Sign In
+        </a>
+        <a routerLink="/auth/register" class="navbar__mobile-link" (click)="menuOpen.set(false)">
+          Create Account
+        </a>
+      </ng-container>
+
+      <ng-container *ngIf="authService.isLoggedIn()">
+        <a routerLink="/cart" class="navbar__mobile-link" (click)="menuOpen.set(false)">
+          Cart ({{ cartService.totalItems() }})
+        </a>
+        <a
+          *ngIf="authService.isAdmin"
+          routerLink="/admin"
+          class="navbar__mobile-link"
+          (click)="menuOpen.set(false)"
+        >
+          Admin Panel
+        </a>
+        <button
+          class="navbar__mobile-link navbar__mobile-link--danger"
+          (click)="logout(); menuOpen.set(false)"
+        >
+          Sign Out
+        </button>
+      </ng-container>
+    </div>
+
+    <!-- Overlay -->
+    <div class="navbar__overlay" *ngIf="menuOpen()" (click)="menuOpen.set(false)"></div>
   </div>
 
   <!-- Second navbar row — category links -->

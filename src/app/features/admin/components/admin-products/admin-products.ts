@@ -4,6 +4,7 @@ import { AdminProduct, Product, ProductRequest } from '../../../../core/models/p
 import { Category } from '../../../../core/models/category.model';
 import { ProductService } from '../../../../core/services/product.service';
 import { Admin } from '../../admin';
+import { ToastService } from '../../../../core/services/toast.service';
 
 @Component({
   selector: 'app-admin-products',
@@ -44,7 +45,7 @@ export class AdminProducts implements OnInit {
 
   editProduct = signal<any>(null);
 
-  constructor(private productService: ProductService){}
+  constructor(private productService: ProductService, private toast: ToastService){}
 
   ngOnInit() {
     this.loadProducts();
@@ -187,7 +188,7 @@ export class AdminProducts implements OnInit {
       },
       error: (err) => {
         this.isSaving.set(false);
-        alert('Failed to add products: ' + (err.error?.message || 'Unknown error' ));
+        this.toast.error('Failed to add products: ' + (err.error?.message || 'Unknown error' ));
       }
     })
   }
@@ -222,7 +223,7 @@ export class AdminProducts implements OnInit {
       },
       error: (err) => {
         this.isSaving.set(false);
-        alert('Failed to update product: ' + (err.error?.message || 'Unknown error'));
+        this.toast.error('Failed to update product: ' + (err.error?.message || 'Unknown error'));
       }
     })
   }
@@ -242,7 +243,7 @@ export class AdminProducts implements OnInit {
         this.loadProducts();
       },
       error: (err) => {
-        alert('Failed to delete product');
+        this.toast.error('Failed to delete product');
         this.deleteConfirmId.set(null);
       }
     })

@@ -104,8 +104,6 @@ export class ProductDetail implements OnInit{
       emoji: product.emoji,
       category: product.categoryName
     })
-
-    alert(`${product.name} add to Cart!`)
   }
 
   setTab(tab: string) {
