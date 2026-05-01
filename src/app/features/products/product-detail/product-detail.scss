@@ -308,8 +308,32 @@
   &__actions {
     display: flex;
     gap: 12px;
-    margin-bottom: 28px;
-    flex-wrap: wrap;
+    align-items: center;
+  }
+
+  &__wishlist-btn {
+    width: 52px;
+    height: 52px;
+    border: 2px solid #e8e4dc;
+    border-radius: var(--radius-sm);
+    background: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: var(--transition);
+    flex-shrink: 0;
+
+    &:hover {
+      border-color: #e74c3c;
+      background: #fff5f5;
+      transform: scale(1.05);
+    }
+
+    &.active {
+      border-color: #e74c3c;
+      background: #fff5f5;
+    }
   }
 
   &__btn-cart {

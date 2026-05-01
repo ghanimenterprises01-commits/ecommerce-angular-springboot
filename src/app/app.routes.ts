@@ -61,6 +61,15 @@ export const routes: Routes = [
             import('./features/search/search').then(m => m.Search)
      },
 
+     {
+        path: 'wishlist',
+        title: 'My Wishlist — Ghanim Enterprises',
+        loadComponent: () =>
+            import('./features/wishlist/wishlist')
+            .then(m => m.Wishlist),
+        canActivate: [authGuard]
+    },
+
     {
         path: "**",
         redirectTo: ''

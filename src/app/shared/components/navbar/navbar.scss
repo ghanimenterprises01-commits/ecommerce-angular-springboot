@@ -9,6 +9,30 @@
 .navbar {
   background: var(--primary);
 
+  &__action-icon {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__action-badge {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: #c0392b;
+    color: white;
+    font-size: 0.6rem;
+    font-weight: 700;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+  }
+
   &__logout {
     background: none;
     border: none;
@@ -182,6 +206,7 @@
     border: 2px solid transparent;
     transition: var(--transition);
     text-decoration: none;
+    color: white;
 
     &:hover {
       border-color: white;

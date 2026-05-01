@@ -5,6 +5,7 @@ import { environment } from '../../../../environments/environment';
 import { AuthService } from '../../../core/services/auth.service';  
 import { CartService } from '../../../core/services/cart.service';  
 import { filter } from 'rxjs';
+import { WishListService } from '../../../core/services/wishlist.service';
 
 @Component({
   selector: 'app-navbar',
@@ -32,7 +33,7 @@ export class Navbar {
     { name: "Today's Deals", slug: 'deals' },
   ];
 
-  constructor(public authService: AuthService, public cartService: CartService, private router: Router) {
+  constructor(public authService: AuthService, public cartService: CartService, private router: Router, public wishlistService: WishListService) {
 
     // Track current URL and query params
     this.router.events.pipe(

@@ -1,0 +1,81 @@
+<div class="wishlist-page">
+  <div class="container">
+    <div class="wishlist-page__header">
+      <h1 class="wishlist-page__title">
+        My Wishlist
+        <span *ngIf="wishlistService.count > 0"> ({{ wishlistService.count }}) </span>
+      </h1>
+    </div>
+
+    <!-- Empty state -->
+    <div class="wishlist-empty" *ngIf="wishlistService.wishlistItems().length === 0">
+      <span>💔</span>
+      <h2>Your wishlist is empty</h2>
+      <p>Save items you love for later</p>
+      <a routerLink="/products" class="btn-primary"> Browse Products </a>
+    </div>
+
+    <!-- Wishlist grid -->
+    <div class="wishlist-grid" *ngIf="wishlistService.wishlistItems().length > 0">
+      <div class="wcard" *ngFor="let product of wishlistService.wishlistItems()">
+        <!-- Image -->
+        <a [routerLink]="['/products', product.id]" class="wcard__img">
+          <img
+            *ngIf="product.imageUrl"
+            [src]="optimizeImage(product.imageUrl, 300)"
+            [alt]="product.name"
+            class="wcard__real-img"
+          />
+          <span *ngIf="!product.imageUrl" class="wcard__emoji">
+            {{ product.emoji }}
+          </span>
+        </a>
+
+        <!-- Body -->
+        <div class="wcard__body">
+          <p class="wcard__category">
+            {{ product.categoryName }}
+          </p>
+          <a [routerLink]="['/products', product.id]" class="wcard__name">
+            {{ product.name }}
+          </a>
+          <p class="wcard__price">{{ currencySymbol }} {{ product.price | number }}</p>
+          <p class="wcard__stock" [class.out]="!product.inStock">
+            {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
+          </p>
+
+          <!-- Actions -->
+          <div class="wcard__actions">
+            <button
+              class="wcard__cart-btn"
+              [disabled]="!product.inStock"
+              (click)="moveToCart(product)"
+            >
+              🛒 Move to Cart
+            </button>
+            <button class="wcard__remove-btn" (click)="removeFromWishlist(product.id)">
+              <svg
+                width="16"
+                height="16"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+              >
+                <polyline points="3 6 5 6 21 6" />
+                <path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Clear all -->
+    <div class="wishlist-footer" *ngIf="wishlistService.wishlistItems().length > 0">
+      <button class="wishlist-clear" (click)="wishlistService.clearWishlist()">
+        Clear Wishlist
+      </button>
+    </div>
+  </div>
+</div>

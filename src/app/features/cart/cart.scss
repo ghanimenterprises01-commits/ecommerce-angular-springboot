@@ -38,7 +38,9 @@
     text-decoration: none;
     transition: var(--transition);
 
-    &:hover { text-decoration: underline; }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -66,7 +68,9 @@
   font-family: 'Inter', sans-serif;
   margin-bottom: 8px;
 
-  &:focus { border-color: var(--accent); }
+  &:focus {
+    border-color: var(--accent);
+  }
 }
 
 .cart-summary__notes {
@@ -79,7 +83,9 @@
   font-family: 'Inter', sans-serif;
   resize: none;
 
-  &:focus { border-color: var(--accent); }
+  &:focus {
+    border-color: var(--accent);
+  }
 }
 
 // Empty cart
@@ -142,7 +148,9 @@
     font-weight: 500;
     transition: var(--transition);
 
-    &:hover { text-decoration: underline; }
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 
@@ -177,7 +185,9 @@
   align-items: flex-start;
   transition: var(--transition);
 
-  &:hover { box-shadow: var(--shadow-sm); }
+  &:hover {
+    box-shadow: var(--shadow-sm);
+  }
 
   &__img {
     width: 90px;
@@ -187,8 +197,18 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 2.8rem;
+    border: 1px solid var(--border);
     flex-shrink: 0;
+  }
+
+  &__real-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__emoji {
+    font-size: 2.5rem;
   }
 
   &__info {
@@ -214,7 +234,9 @@
     margin-bottom: 8px;
     line-height: 1.3;
 
-    &:hover { color: var(--accent); }
+    &:hover {
+      color: var(--accent);
+    }
   }
 
   &__price-mobile {
@@ -224,7 +246,9 @@
     color: var(--primary);
     margin-bottom: 10px;
 
-    @media (max-width: 576px) { display: block; }
+    @media (max-width: 576px) {
+      display: block;
+    }
   }
 
   &__actions {
@@ -254,8 +278,13 @@
       align-items: center;
       justify-content: center;
 
-      &:hover:not(:disabled) { background: var(--border); }
-      &:disabled { color: var(--text-muted); cursor: not-allowed; }
+      &:hover:not(:disabled) {
+        background: var(--border);
+      }
+      &:disabled {
+        color: var(--text-muted);
+        cursor: not-allowed;
+      }
     }
 
     span {
@@ -282,7 +311,9 @@
     font-family: 'Inter', sans-serif;
     transition: var(--transition);
 
-    &:hover { color: var(--danger); }
+    &:hover {
+      color: var(--danger);
+    }
   }
 
   &__price {
@@ -293,7 +324,9 @@
     align-items: flex-end;
     gap: 4px;
 
-    @media (max-width: 576px) { display: none; }
+    @media (max-width: 576px) {
+      display: none;
+    }
   }
 
   &__unit-price {
@@ -354,8 +387,13 @@
         color: var(--text-primary);
         background: var(--surface);
 
-        &:focus { border-color: var(--accent); }
-        &::placeholder { color: var(--text-muted); font-size: 0.78rem; }
+        &:focus {
+          border-color: var(--accent);
+        }
+        &::placeholder {
+          color: var(--text-muted);
+          font-size: 0.78rem;
+        }
       }
 
       button {
@@ -371,7 +409,9 @@
         transition: var(--transition);
         white-space: nowrap;
 
-        &:hover { opacity: 0.9; }
+        &:hover {
+          opacity: 0.9;
+        }
       }
     }
 
@@ -395,7 +435,9 @@
         cursor: pointer;
         font-family: 'Inter', sans-serif;
 
-        &:hover { text-decoration: underline; }
+        &:hover {
+          text-decoration: underline;
+        }
       }
     }
   }
@@ -414,7 +456,10 @@
     font-size: 0.9rem;
     color: var(--text-secondary);
 
-    &--discount { color: var(--success); font-weight: 600; }
+    &--discount {
+      color: var(--success);
+      font-weight: 600;
+    }
 
     &--total {
       font-size: 1.1rem;
@@ -474,6 +519,38 @@
     font-size: 0.78rem;
     color: var(--text-muted);
 
-    svg { color: var(--success); }
+    svg {
+      color: var(--success);
+    }
+  }
+}
+
+.cart-placing-order {
+  text-align: center;
+  padding: 100px 20px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--border);
+
+  &__spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    margin: 0 auto 20px;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    font-weight: 500;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
   }
 }

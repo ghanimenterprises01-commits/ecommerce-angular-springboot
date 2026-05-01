@@ -145,8 +145,10 @@ export class CartService {
         // Track purchase
         this.analytics.trackPurchase(order.id, order.total);
 
-        this.clearCart();
-        this.router.navigate(['/order-success', order.id]);
+        this.router.navigate(['/order-success', order.id])
+        .then(() => {
+          this.clearCart();
+        })
       },
       error: (err) => {
         this.isPlacingOrder.set(false);

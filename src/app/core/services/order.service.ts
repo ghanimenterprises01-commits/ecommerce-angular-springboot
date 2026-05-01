@@ -9,6 +9,7 @@ export interface CartItem {
   quantity: number;
   emoji: string;
   category: string;
+  imageUrl: string | null;
 }
 
 export interface OrderRequest {

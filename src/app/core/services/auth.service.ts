@@ -90,6 +90,7 @@ export class AuthService {
         removeItem('role');
         removeItem('user');
         removeItem('cart');
+        removeItem('wishlist');
         this.currentUser.set(null);
         this.isLoggedIn.set(false);
         this.router.navigate(['/']);

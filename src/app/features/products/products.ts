@@ -7,6 +7,8 @@ import { ProductService } from '../../core/services/product.service';
 import { CartService } from '../../core/services/cart.service';  
 import { SeoService } from '../../core/services/seo.service';
 import { optimizeImageUrl } from '../../core/utils/image.utils';
+import { WishListService } from '../../core/services/wishlist.service';
+import { AuthService } from '../../core/services/auth.service';
 
 @Component({
   selector: 'app-products',
@@ -51,7 +53,7 @@ export class Products implements OnInit {
 
   
 
-  constructor(private route: ActivatedRoute, private ProductService: ProductService, private cartService: CartService, private seo: SeoService) {}
+  constructor(private route: ActivatedRoute, private ProductService: ProductService, private cartService: CartService, private seo: SeoService, public wishlistService: WishListService, public authService: AuthService) {}
 
   ngOnInit() {
     this.seo.updateMeta({
@@ -157,7 +159,8 @@ this.loadProducts();
       price: product.price,
       quantity: 1, 
       emoji: product.emoji,
-      category: product.categoryName 
+      category: product.categoryName,
+      imageUrl: product.imageUrl
     });
   }
 
@@ -190,6 +193,10 @@ this.loadProducts();
 
   optimizeImage(url: string | null, width: number = 400): string {
     return optimizeImageUrl(url, width);
+  }
+
+  toggleWishlist(product: Product) {
+    this.wishlistService.toggleWishList(product);
   }
 
 }

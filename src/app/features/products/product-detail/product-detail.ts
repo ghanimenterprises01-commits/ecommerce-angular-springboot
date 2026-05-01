@@ -8,6 +8,7 @@ import { CartService } from '../../../core/services/cart.service';
 import { SeoService } from '../../../core/services/seo.service';
 import { optimizeImageUrl } from '../../../core/utils/image.utils';
 import { Router } from '@angular/router';
+import { WishListService } from '../../../core/services/wishlist.service';
 
 @Component({
   selector: 'app-product-detail',
@@ -33,7 +34,7 @@ export class ProductDetail implements OnInit{
   relatedTrack!: ElementRef;
 
 
-  constructor(private route: ActivatedRoute, private productService: ProductService, private cartService: CartService, private seo: SeoService) {}
+  constructor(private route: ActivatedRoute, private productService: ProductService, private cartService: CartService, private seo: SeoService, private wishlistService: WishListService) {}
 
   ngOnInit(){
     this.route.params.subscribe(params => {
@@ -102,7 +103,8 @@ export class ProductDetail implements OnInit{
       price: product.price,
       quantity: this.quantity(),
       emoji: product.emoji,
-      category: product.categoryName
+      category: product.categoryName,
+      imageUrl: product.imageUrl
     })
   }
 
@@ -229,5 +231,18 @@ export class ProductDetail implements OnInit{
       left: direction * 280,
       behavior: 'smooth'
     });
+  }
+
+  isInWishlist(): boolean {
+    const product = this.product();
+    if (!product) return false;
+
+    return this.wishlistService.isInWishlist(product.id);
+  }
+
+  toggleWishlist() {
+    const product = this.product();
+    if (!product) return;
+    this.wishlistService.toggleWishList(product);
   }
 }

@@ -4,7 +4,13 @@
     <div class="container catalog__header-inner">
       <div>
         <h1 class="catalog__title">
-          {{ selectedBadge() === 'SALE' ? "Today's Deals" : selectedCategory() ? categories.find(c => c.slug === selectedCategory())?.name : 'All Products' }}
+          {{
+            selectedBadge() === 'SALE'
+              ? "Today's Deals"
+              : selectedCategory()
+                ? categories.find((c) => c.slug === selectedCategory())?.name
+                : 'All Products'
+          }}
         </h1>
         <p class="catalog__count">{{ productList.length }} products found</p>
       </div>
@@ -179,6 +185,31 @@
               <span class="pcard__stars">★★★★★</span>
               <span class="pcard__reviews">({{ product.reviews }})</span>
             </div> -->
+            <button
+              class="pcard__wishlist"
+              (click)="toggleWishlist(product); $event.preventDefault(); $event.stopPropagation()"
+              [class.active]="wishlistService.isInWishlist(product.id)"
+              [title]="
+                !authService.isLoggedIn()
+                  ? 'Sign in to save to wishlist'
+                  : wishlistService.isInWishlist(product.id)
+                    ? 'Remove from wishlist'
+                    : 'Add to wishlist'
+              "
+            >
+              <svg
+                width="18"
+                height="18"
+                viewBox="0 0 24 24"
+                [attr.fill]="wishlistService.isInWishlist(product.id) ? '#e74c3c' : 'none'"
+                stroke="#e74c3c"
+                stroke-width="2"
+              >
+                <path
+                  d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"
+                />
+              </svg>
+            </button>
             <div class="pcard__price">
               <span class="pcard__price-now">Rs. {{ product.price | number }}</span>
             </div>
@@ -218,13 +249,44 @@
                 [class.badge--new]="product.badge === 'New'"
                 [class.badge--best]="product.badge === 'Best Seller'"
               >
-                {{ product.badge }}
+                {{
+                  product.badge === 'BEST_SELLER'
+                    ? 'Best Seller'
+                    : product.badge === 'NEW'
+                      ? 'New'
+                      : 'Sale'
+                }}
               </span>
+
+              <button
+                class="pcard__wishlist"
+                (click)="toggleWishlist(product); $event.preventDefault(); $event.stopPropagation()"
+                [class.active]="wishlistService.isInWishlist(product.id)"
+                [title]="
+                  wishlistService.isInWishlist(product.id)
+                    ? 'Remove from wishlist'
+                    : 'Add to wishlist'
+                "
+              >
+                <svg
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  [attr.fill]="wishlistService.isInWishlist(product.id) ? '#e74c3c' : 'none'"
+                  stroke="#e74c3c"
+                  stroke-width="2"
+                >
+                  <path
+                    d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"
+                  />
+                </svg>
+              </button>
               <span class="lcard__stock" [class.out]="!product.inStock">
                 {{ product.inStock ? 'In Stock' : 'Out of Stock' }}
               </span>
             </div>
           </div>
+
           <div class="lcard__right">
             <div class="lcard__price">
               <span class="lcard__price-now">Rs. {{ product.price | number }}</span>

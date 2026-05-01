@@ -66,7 +66,8 @@ export class Search implements OnInit{
       price: product.price,
       quantity: 1,
       emoji: product.emoji,
-      category: product.categoryName
+      category: product.categoryName,
+      imageUrl: product.imageUrl
     });
   }
 

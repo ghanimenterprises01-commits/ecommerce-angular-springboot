@@ -13,19 +13,31 @@
 
     <div class="cart-error" *ngIf="cartService.orderError()">
       <span>⚠️</span>
-      {{ cartService.orderError()}}
+      {{ cartService.orderError() }}
     </div>
 
     <!-- Empty cart -->
-    <div class="cart-empty" *ngIf="cartService.cartItems().length === 0">
+    <div
+      class="cart-empty"
+      *ngIf="cartService.cartItems().length === 0 && !cartService.isPlacingOrder()"
+    >
       <span class="cart-empty__icon">🛒</span>
       <h2>Your cart is empty</h2>
       <p>Looks like you have not added anything to your cart yet.</p>
       <a routerLink="/products" class="btn-primary">Start Shopping</a>
     </div>
 
+    <!-- Order placing overlay -->
+    <div class="cart-placing-order" *ngIf="cartService.isPlacingOrder()">
+      <div class="cart-placing-order__spinner"></div>
+      <p>Placing your order...</p>
+    </div>
+
     <!-- Cart content -->
-    <div class="cart-content" *ngIf="cartService.cartItems().length > 0">
+    <div
+      class="cart-content"
+      *ngIf="cartService.cartItems().length > 0 && !cartService.isPlacingOrder()"
+    >
       <!-- Cart items -->
       <div class="cart-items">
         <!-- Free delivery notice -->
@@ -61,7 +73,15 @@
         <!-- Item cards -->
         <div class="cart-item" *ngFor="let item of cartService.cartItems()">
           <div class="cart-item__img">
-            <span>{{ item.emoji }}</span>
+            <img
+              *ngIf="item.imageUrl"
+              [src]="optimizeImage(item.imageUrl, 200)"
+              [alt]="item.name"
+              class="pcard__real-img"
+            />
+            <span class="pcard__emoji" *ngIf="!item.imageUrl">
+              {{ item.emoji }}
+            </span>
           </div>
           <div class="cart-item__info">
             <p class="cart-item__category">{{ item.category }}</p>
@@ -129,19 +149,20 @@
           </div>
         </div>
 
-          <div class="cart-summary__address"
-             *ngIf="showCheckoutForm()">
-          <p class="cart-summary__promo-label">
-            Delivery Address
-          </p>
-          <input type="text"
-                 placeholder="Enter your delivery address"
-                 class="cart-summary__address-input"
-                 (input)="onAddressInput($event)" />
-          <textarea placeholder="Any notes for delivery..."
-                    rows="2"
-                    class="cart-summary__notes"
-                    (input)="onNotesInput($event)">
+        <div class="cart-summary__address" *ngIf="showCheckoutForm()">
+          <p class="cart-summary__promo-label">Delivery Address</p>
+          <input
+            type="text"
+            placeholder="Enter your delivery address"
+            class="cart-summary__address-input"
+            (input)="onAddressInput($event)"
+          />
+          <textarea
+            placeholder="Any notes for delivery..."
+            rows="2"
+            class="cart-summary__notes"
+            (input)="onNotesInput($event)"
+          >
           </textarea>
         </div>
 
@@ -157,9 +178,7 @@
           </div>
           <div class="cart-summary__row">
             <span>Delivery Fee</span>
-            <span *ngIf="deliveryFee > 0">
-              {{ currencySymbol }} {{ deliveryFee | number }}
-            </span>
+            <span *ngIf="deliveryFee > 0"> {{ currencySymbol }} {{ deliveryFee | number }} </span>
             <span class="cart-summary__free" *ngIf="deliveryFee === 0"> FREE </span>
           </div>
           <div class="cart-summary__divider"></div>
@@ -170,10 +189,8 @@
         </div>
 
         <!-- Checkout button -->
-        <button class="cart-summary__checkout"
-        *ngIf="!showCheckoutForm()"
-        (click)="checkout()">
-          {{authService.isLoggedIn() ? 'Proceed to Checkout': 'Login to Checkout'}}
+        <button class="cart-summary__checkout" *ngIf="!showCheckoutForm()" (click)="checkout()">
+          {{ authService.isLoggedIn() ? 'Proceed to Checkout' : 'Login to Checkout' }}
           <svg
             width="16"
             height="16"
@@ -186,13 +203,22 @@
           </svg>
         </button>
 
-         <button class="cart-summary__checkout"
-                *ngIf="showCheckoutForm()"
-                [disabled]="cartService.isPlacingOrder()"
-                (click)="placeOrder()">
+        <button
+          class="cart-summary__checkout"
+          *ngIf="showCheckoutForm()"
+          [disabled]="cartService.isPlacingOrder()"
+          (click)="placeOrder()"
+        >
           {{ cartService.isPlacingOrder() ? 'Placing Order...' : 'Place Order' }}
-          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-            <path d="M5 12h14M12 5l7 7-7 7"/>
+          <svg
+            width="16"
+            height="16"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            viewBox="0 0 24 24"
+          >
+            <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </button>
 

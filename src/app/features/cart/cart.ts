@@ -5,6 +5,7 @@ import { environment } from '../../../environments/environment';
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
+import { optimizeImageUrl } from '../../core/utils/image.utils';
 
 @Component({
   selector: 'app-cart',
@@ -120,5 +121,12 @@ export class Cart {
       this.deliveryAddress(),
       this.notes()
     );
+  }
+
+  optimizeImage(
+    url: string | null | undefined,
+    width: number = 150
+  ): string {
+    return optimizeImageUrl(url, width);
   }
 }
