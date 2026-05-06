@@ -54,6 +54,34 @@
     pointer-events: auto;
   }
 
+  &__visual {
+    flex-shrink: 0;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
+
+  &__img {
+    width: 320px;
+    height: 260px;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+    box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+  }
+
+  &__tag {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #131921;
+    background: rgba(201, 168, 76, 0.15);
+    border: 1px solid rgba(201, 168, 76, 0.3);
+    padding: 4px 12px;
+    border-radius: 100px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+
   &__inner {
     display: flex;
     align-items: center;
@@ -102,6 +130,73 @@
 
     @media (max-width: 768px) {
       display: none;
+    }
+  }
+
+  // ─── Full-bleed variant (image as background with text overlay) ───────────
+  &--fullbleed {
+    .banner-slide__bg-img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      z-index: 0;
+    }
+
+    .banner-slide__overlay {
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      background: linear-gradient(
+        to right,
+        rgba(0, 0, 0, 0.68) 0%,
+        rgba(0, 0, 0, 0.4) 55%,
+        rgba(0, 0, 0, 0.05) 100%
+      );
+    }
+
+    .banner-slide__inner {
+      position: relative;
+      z-index: 2;
+    }
+
+    .banner-slide__tag {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.15);
+      border-color: rgba(255, 255, 255, 0.35);
+    }
+
+    .banner-slide__sub {
+      color: rgba(255, 255, 255, 0.85);
+    }
+  }
+
+  // ─── Image-only variant (no text, image defines its own height) ───────────
+  &--imageonly {
+    // Override the absolute positioning so height follows image naturally
+    position: relative;
+    height: auto !important;
+    background: transparent !important;
+    display: block;
+
+    // Hide overlay and text entirely
+    .banner-slide__overlay,
+    .banner-slide__inner {
+      display: none !important;
+    }
+
+    .banner-slide__bg-img {
+      position: relative !important;
+      inset: unset !important;
+      display: block;
+      width: 100%;
+      height: auto;
+      max-height: 330px;
+      object-fit: contain;
+      object-position: center;
+      z-index: 0;
     }
   }
 }

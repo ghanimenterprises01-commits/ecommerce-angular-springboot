@@ -29,9 +29,22 @@ export class Home implements OnInit, OnDestroy {
   constructor(private productService: ProductService, private seo: SeoService) {}
 
   banners = [
+      {
+      title: "Welcome to Ghanim Enterprises",
+      subtitle: "Quality household products for every home in Sri Lanka",
+      fullBleed: true,
+      imageOnly: true, 
+      btn: "Shop Now",
+      slug: "",
+      bg: "#f0f4f8",
+      accent: "#131921",
+      emoji: "🏪",
+      imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/w_1200,h_480,c_fill,g_auto,f_auto,q_auto/v1778089702/shop_front_website_ks2yp4.webp"
+    },
     {
       title: "Fresh Arrivals in Kitchenware",
       subtitle: "Upgrade your kitchen with premium tools",
+      fullBleed: false,
       btn: "Shop Kitchenware",
       slug: "kitchenware",
       bg: "#f0f7ee",
@@ -41,6 +54,7 @@ export class Home implements OnInit, OnDestroy {
     {
       title: "Gift Items for Every Occasion",
       subtitle: "Find the perfect gift for your loved ones",
+      fullBleed: false,
       btn: "Shop Gift Items",
       slug: "gift-items",
       bg: "#fef9ee",
@@ -50,6 +64,7 @@ export class Home implements OnInit, OnDestroy {
     {
       title: "Lighting Solutions for Your Home",
       subtitle: "Brighten every corner beautifully",
+      fullBleed: false,
       btn: "Shop Lighting",
       slug: "lighting",
       bg: "#eef4ff",
@@ -59,6 +74,7 @@ export class Home implements OnInit, OnDestroy {
     {
       title: "Quality Umbrellas for Every Season",
       subtitle: "Stay dry and stylish all year round",
+      fullBleed: false,
       btn: "Shop Umbrellas",
       slug: "umbrellas",
       bg: "#fdf2f8",
@@ -115,11 +131,14 @@ export class Home implements OnInit, OnDestroy {
   }
 
   private startBannerSlide() {
-    this.bannerInterval = setInterval(() => {
+    const delay = this.currentBanner() === 0 ? 8000 : 4000; 
+
+    this.bannerInterval = setTimeout(() => {
       this.currentBanner.set(
         (this.currentBanner() + 1) % this.banners.length
       );
-    }, 4000)
+      this.startBannerSlide();  // reschedule with new delay
+    }, delay);
   }
 
   loadWidgets() {
@@ -164,11 +183,17 @@ export class Home implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    clearInterval(this.bannerInterval);
+    clearTimeout(this.bannerInterval);
   }   
 
   setBanner(index: number) {
     this.currentBanner.set(index);
+  }
+
+  getBannerQueryParams(banner: any): Record<string, string> {
+    if (banner.slug === 'deals') return { badge: 'SALE' };
+    if (banner.slug) return { category: banner.slug };
+    return {};
   }
 
   addToCart(product: any) {

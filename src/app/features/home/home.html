@@ -6,24 +6,58 @@
         class="banner-slide"
         *ngFor="let banner of banners; let i = index"
         [class.active]="currentBanner() === i"
-        [style.background]="banner.bg"
+        [class.banner-slide--fullbleed]="banner.fullBleed"
+        [class.banner-slide--imageonly]="banner.imageOnly"
+        [style.background]="banner.fullBleed ? 'transparent' : banner.bg"
       >
-        <div class="container banner-slide__inner">
+        <!-- Full-bleed background image -->
+        <img
+          *ngIf="banner.fullBleed && banner.imageUrl"
+          [src]="banner.imageUrl"
+          [alt]="banner.title"
+          class="banner-slide__bg-img"
+        />
+
+        <!-- Overlay only when there's text on top -->
+        <div
+          *ngIf="banner.fullBleed && banner.imageUrl && !banner.imageOnly"
+          class="banner-slide__overlay"
+        ></div>
+
+        <!-- Text content: hidden for imageOnly banners -->
+        <div class="container banner-slide__inner" *ngIf="!banner.imageOnly">
           <div class="banner-slide__content">
-            <h1 class="banner-slide__title" [style.color]="banner.accent">
+            <p class="banner-slide__tag" *ngIf="banner.slug === ''">🇱🇰 Sri Lanka's Trusted Shop</p>
+            <h1
+              class="banner-slide__title"
+              [style.color]="banner.fullBleed ? '#fff' : banner.accent"
+            >
               {{ banner.title }}
             </h1>
             <p class="banner-slide__sub">{{ banner.subtitle }}</p>
             <a
               class="banner-slide__btn"
               [routerLink]="['/products']"
-              [queryParams]="{ category: banner.slug }"
-              [style.background]="banner.accent"
+              [queryParams]="getBannerQueryParams(banner)"
+              [style.background]="banner.fullBleed ? '#fff' : banner.accent"
+              [style.color]="banner.fullBleed ? banner.accent : '#fff'"
             >
               {{ banner.btn }}
             </a>
           </div>
-          <div class="banner-slide__emoji">{{ banner.emoji }}</div>
+
+          <!-- Right-side visual: only for non-fullbleed banners -->
+          <div class="banner-slide__visual" *ngIf="!banner.fullBleed">
+            <img
+              *ngIf="banner.imageUrl"
+              [src]="banner.imageUrl"
+              [alt]="banner.title"
+              class="banner-slide__img"
+            />
+            <div *ngIf="!banner.imageUrl" class="banner-slide__emoji">
+              {{ banner.emoji }}
+            </div>
+          </div>
         </div>
       </div>
     </div>
