@@ -9,6 +9,10 @@
   overflow: hidden;
   height: 320px;
 
+  @media (max-width: 768px) {
+    height: auto;
+  }
+
   &__track {
     height: 100%;
   }
@@ -41,6 +45,16 @@
 }
 
 .banner-slide {
+  @media (max-width: 768px) {
+    position: relative;
+    inset: unset;
+  }
+
+  &:not(.active) {
+    @media (max-width: 768px) {
+      display: none;
+    }
+  }
   position: absolute;
   inset: 0;
   opacity: 0;
@@ -193,6 +207,7 @@
       display: block;
       width: 100%;
       height: auto;
+      max-height: unset;
       max-height: 330px;
       object-fit: contain;
       object-position: center;
