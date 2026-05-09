@@ -137,7 +137,7 @@
           <div class="cart-summary__promo-input" *ngIf="!promoApplied()">
             <input
               type="text"
-              placeholder="Enter code (SAVE10 or FLAT500)"
+              placeholder="Enter code"
               [value]="promoCode()"
               (input)="onPromoInput($event)"
             />
@@ -147,23 +147,6 @@
             <span>✓ Promo applied — Rs. {{ promoDiscount() | number }} off</span>
             <button (click)="removePromo()">Remove</button>
           </div>
-        </div>
-
-        <div class="cart-summary__address" *ngIf="showCheckoutForm()">
-          <p class="cart-summary__promo-label">Delivery Address</p>
-          <input
-            type="text"
-            placeholder="Enter your delivery address"
-            class="cart-summary__address-input"
-            (input)="onAddressInput($event)"
-          />
-          <textarea
-            placeholder="Any notes for delivery..."
-            rows="2"
-            class="cart-summary__notes"
-            (input)="onNotesInput($event)"
-          >
-          </textarea>
         </div>
 
         <!-- Price breakdown -->
@@ -188,28 +171,8 @@
           </div>
         </div>
 
-        <!-- Checkout button -->
-        <button class="cart-summary__checkout" *ngIf="!showCheckoutForm()" (click)="checkout()">
+        <button class="cart-summary__checkout" (click)="checkout()">
           {{ authService.isLoggedIn() ? 'Proceed to Checkout' : 'Login to Checkout' }}
-          <svg
-            width="16"
-            height="16"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            viewBox="0 0 24 24"
-          >
-            <path d="M5 12h14M12 5l7 7-7 7" />
-          </svg>
-        </button>
-
-        <button
-          class="cart-summary__checkout"
-          *ngIf="showCheckoutForm()"
-          [disabled]="cartService.isPlacingOrder()"
-          (click)="placeOrder()"
-        >
-          {{ cartService.isPlacingOrder() ? 'Placing Order...' : 'Place Order' }}
           <svg
             width="16"
             height="16"
@@ -257,3 +220,10 @@
     </div>
   </div>
 </div>
+
+<app-checkout-modal
+  [isOpen]="showCheckoutModal()"
+  [isSubmitting]="cartService.isPlacingOrder()"
+  (closed)="onModalClosed()"
+  (orderSubmitted)="onOrderSubmitted($event)"
+/>

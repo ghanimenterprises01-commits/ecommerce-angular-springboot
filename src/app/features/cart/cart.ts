@@ -1,4 +1,4 @@
-import { Component, signal, computed } from '@angular/core';
+import { Component, signal, computed, effect } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { environment } from '../../../environments/environment';
@@ -6,11 +6,12 @@ import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
 import { ToastService } from '../../core/services/toast.service';
 import { optimizeImageUrl } from '../../core/utils/image.utils';
+import { CheckoutFormData, CheckoutModal } from '../checkout-modal/checkout-modal';
 
 @Component({
   selector: 'app-cart',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, CheckoutModal],
   templateUrl: './cart.html',
   styleUrl: './cart.scss'
 })
@@ -20,15 +21,26 @@ export class Cart {
   promoCode = signal('');
   promoApplied = signal(false);
   promoDiscount = signal(0);
-  deliveryAddress = signal('');
-  notes = signal('');
-  showCheckoutForm = signal(false);
+  
+  showCheckoutModal = signal(false);
 
   constructor(
     public cartService: CartService,
     public authService: AuthService,
     private toast: ToastService
-  ) {}
+  ) {
+    effect(() => {
+      if (this.cartService.orderSuccess()) {
+        this.showCheckoutModal.set(false);
+      }
+    });
+
+    effect(() => {
+      if (this.cartService.orderError()) {
+        this.showCheckoutModal.set(false);
+      }
+    })
+  }
 
   get subtotal() { return this.cartService.subtotal(); }
   get totalItems() { return this.cartService.totalItems(); }
@@ -63,18 +75,6 @@ export class Cart {
     );
   }
 
-  onAddressInput(event: Event) {
-    this.deliveryAddress.set(
-      (event.target as HTMLInputElement).value
-    );
-  }
-
-  onNotesInput(event: Event) {
-    this.notes.set(
-      (event.target as HTMLTextAreaElement).value
-    );
-  }
-
   applyPromo() {
     const code = this.promoCode().trim().toUpperCase();
     if (code === 'SAVE10') {
@@ -104,22 +104,40 @@ export class Cart {
 
   checkout() {
     if (!this.authService.isLoggedIn()) {
-      this.showCheckoutForm.set(false);
-      this.cartService.placeOrder(
-        this.promoApplied() ? this.promoCode() : undefined,
-        this.deliveryAddress(),
-        this.notes()
-      );
+      this.cartService.placeOrder();
       return;
     }
-    this.showCheckoutForm.set(true);
+    this.showCheckoutModal.set(true);
   }
 
-  placeOrder() {
+  onModalClosed(){
+    this.showCheckoutModal.set(false);
+  }
+
+  onOrderSubmitted(formData: CheckoutFormData) {
+    const deliveryAddress = [
+      formData.streetAddress,
+      formData.landmark,
+      formData.city,
+      formData.district,
+      formData.province,
+      formData.postalCode ? `(${formData.postalCode})` : '',
+    ]
+      .filter(Boolean)
+      .join(', ');
+ 
+    const notes = [
+      `Contact: +94${formData.phone} (${formData.fullName})`,
+      `Label: ${formData.addressLabel}`,
+      formData.notes,
+    ]
+      .filter(Boolean)
+      .join(' | ');
+ 
     this.cartService.placeOrder(
       this.promoApplied() ? this.promoCode() : undefined,
-      this.deliveryAddress(),
-      this.notes()
+      deliveryAddress,
+      notes
     );
   }
 

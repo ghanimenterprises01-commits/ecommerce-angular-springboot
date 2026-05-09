@@ -1,0 +1,285 @@
+<div class="checkout-overlay" *ngIf="isOpen" (click)="onOverlayClick($event)">
+  <div class="checkout-modal" role="dialog" aria-modal="true" aria-labelledby="checkout-title">
+    <!-- Header -->
+    <div class="checkout-modal__header">
+      <h2 id="checkout-title" class="checkout-modal__title">Delivery Details</h2>
+      <button class="checkout-modal__close" (click)="close()" aria-label="Close">
+        <svg
+          width="20"
+          height="20"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <line x1="18" y1="6" x2="6" y2="18" />
+          <line x1="6" y1="6" x2="18" y2="18" />
+        </svg>
+      </button>
+    </div>
+
+    <!-- Body -->
+    <div class="checkout-modal__body">
+      <!-- Row 1: Full Name + Phone -->
+      <div class="checkout-form__row">
+        <div class="checkout-form__group">
+          <label class="checkout-form__label" for="fullName">
+            Full Name <span class="checkout-form__required">*</span>
+          </label>
+          <input
+            id="fullName"
+            type="text"
+            class="checkout-form__input"
+            [class.checkout-form__input--error]="errors['fullName']"
+            placeholder="Enter your full name"
+            [value]="form.fullName"
+            (input)="onInput('fullName', $event)"
+          />
+          <span class="checkout-form__error" *ngIf="errors['fullName']">
+            {{ errors['fullName'] }}
+          </span>
+        </div>
+
+        <div class="checkout-form__group">
+          <label class="checkout-form__label" for="phone">
+            Phone Number <span class="checkout-form__required">*</span>
+          </label>
+          <div class="checkout-form__phone-wrap">
+            <span class="checkout-form__phone-prefix">+94</span>
+            <input
+              id="phone"
+              type="tel"
+              class="checkout-form__input checkout-form__input--phone"
+              [class.checkout-form__input--error]="errors['phone']"
+              placeholder="0771234567 or 771234567"
+              maxlength="11"
+              [value]="form.phone"
+              (input)="onInput('phone', $event)"
+            />
+          </div>
+          <span class="checkout-form__error" *ngIf="errors['phone']">
+            {{ errors['phone'] }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Row 2: Province + District -->
+      <div class="checkout-form__row">
+        <div class="checkout-form__group">
+          <label class="checkout-form__label" for="province">
+            Province <span class="checkout-form__required">*</span>
+          </label>
+          <div class="checkout-form__select-wrap">
+            <select
+              id="province"
+              class="checkout-form__select"
+              [class.checkout-form__select--error]="errors['province']"
+              [value]="form.province"
+              (change)="onProvinceChange($event)"
+            >
+              <option value="" disabled selected>Please choose your province</option>
+              <option *ngFor="let p of provinces" [value]="p">{{ p }}</option>
+            </select>
+            <svg
+              class="checkout-form__select-arrow"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+          <span class="checkout-form__error" *ngIf="errors['province']">
+            {{ errors['province'] }}
+          </span>
+        </div>
+
+        <div class="checkout-form__group">
+          <label class="checkout-form__label" for="district">
+            District <span class="checkout-form__required">*</span>
+          </label>
+          <div class="checkout-form__select-wrap">
+            <select
+              id="district"
+              class="checkout-form__select"
+              [class.checkout-form__select--error]="errors['district']"
+              [value]="form.district"
+              (change)="onInput('district', $event)"
+              [disabled]="!form.province"
+            >
+              <option value="" disabled selected>Please choose your district</option>
+              <option *ngFor="let d of currentDistricts" [value]="d">{{ d }}</option>
+            </select>
+            <svg
+              class="checkout-form__select-arrow"
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+          <span class="checkout-form__error" *ngIf="errors['district']">
+            {{ errors['district'] }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Row 3: City -->
+      <div class="checkout-form__row">
+        <div class="checkout-form__group">
+          <label class="checkout-form__label" for="city">
+            City / Town <span class="checkout-form__required">*</span>
+          </label>
+          <input
+            id="city"
+            type="text"
+            class="checkout-form__input"
+            [class.checkout-form__input--error]="errors['city']"
+            placeholder="e.g. Colombo 03, Kandy"
+            [value]="form.city"
+            (input)="onInput('city', $event)"
+          />
+          <span class="checkout-form__error" *ngIf="errors['city']">
+            {{ errors['city'] }}
+          </span>
+        </div>
+
+        <div class="checkout-form__group">
+          <label class="checkout-form__label" for="postalCode">Postal Code</label>
+          <input
+            id="postalCode"
+            type="text"
+            class="checkout-form__input"
+            placeholder="e.g. 00300"
+            maxlength="5"
+            [value]="form.postalCode"
+            (input)="onInput('postalCode', $event)"
+          />
+        </div>
+      </div>
+
+      <!-- Row 4: Street Address (full width) -->
+      <div class="checkout-form__group checkout-form__group--full">
+        <label class="checkout-form__label" for="streetAddress">
+          House / Building / Street <span class="checkout-form__required">*</span>
+        </label>
+        <input
+          id="streetAddress"
+          type="text"
+          class="checkout-form__input"
+          [class.checkout-form__input--error]="errors['streetAddress']"
+          placeholder="e.g. No. 45, Galle Road"
+          [value]="form.streetAddress"
+          (input)="onInput('streetAddress', $event)"
+        />
+        <span class="checkout-form__error" *ngIf="errors['streetAddress']">
+          {{ errors['streetAddress'] }}
+        </span>
+      </div>
+
+      <!-- Row 5: Landmark -->
+      <div class="checkout-form__group checkout-form__group--full">
+        <label class="checkout-form__label" for="landmark">Landmark / Colony / Locality</label>
+        <input
+          id="landmark"
+          type="text"
+          class="checkout-form__input"
+          placeholder="e.g. Near Majestic City, Bambalapitiya"
+          [value]="form.landmark"
+          (input)="onInput('landmark', $event)"
+        />
+      </div>
+
+      <!-- Row 6: Delivery Notes -->
+      <div class="checkout-form__group checkout-form__group--full">
+        <label class="checkout-form__label" for="notes">Delivery Notes</label>
+        <textarea
+          id="notes"
+          class="checkout-form__textarea"
+          rows="2"
+          placeholder="Any special instructions for delivery..."
+          [value]="form.notes"
+          (input)="onInput('notes', $event)"
+        ></textarea>
+      </div>
+
+      <!-- Label: Home / Office -->
+      <div class="checkout-form__group checkout-form__group--full">
+        <label class="checkout-form__label">Address Label</label>
+        <div class="checkout-form__labels">
+          <button
+            class="checkout-form__label-btn"
+            [class.checkout-form__label-btn--active]="form.addressLabel === 'HOME'"
+            (click)="setLabel('HOME')"
+            type="button"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
+              <polyline points="9 22 9 12 15 12 15 22" />
+            </svg>
+            Home
+          </button>
+          <button
+            class="checkout-form__label-btn"
+            [class.checkout-form__label-btn--active]="form.addressLabel === 'OFFICE'"
+            (click)="setLabel('OFFICE')"
+            type="button"
+          >
+            <svg
+              width="16"
+              height="16"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              viewBox="0 0 24 24"
+            >
+              <rect x="2" y="7" width="20" height="14" rx="2" ry="2" />
+              <path d="M16 21V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v16" />
+            </svg>
+            Office
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- /body -->
+
+    <!-- Footer -->
+    <div class="checkout-modal__footer">
+      <button class="checkout-modal__cancel" (click)="close()" type="button">Cancel</button>
+      <button
+        class="checkout-modal__submit"
+        (click)="submit()"
+        [disabled]="isSubmitting"
+        type="button"
+      >
+        <span *ngIf="!isSubmitting">Place Order</span>
+        <span *ngIf="isSubmitting">Placing Order...</span>
+        <svg
+          *ngIf="!isSubmitting"
+          width="16"
+          height="16"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          viewBox="0 0 24 24"
+        >
+          <path d="M5 12h14M12 5l7 7-7 7" />
+        </svg>
+      </button>
+    </div>
+  </div>
+</div>
