@@ -116,15 +116,26 @@
     align-items: center;
     background: white;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible; // was: hidden — this was clipping the button
     height: 40px;
     border: 2px solid transparent;
     transition: var(--transition);
+    min-width: 0; // prevents flex child from overflowing parent
+
+    @media (max-width: 768px) {
+      margin-right: 8px; // breathing room before the ≡ hamburger button
+    }
 
     &:focus-within {
       border-color: var(--accent);
     }
 
+    // Clip only the internal children, not the outer border
+    & > * {
+      overflow: hidden;
+    }
+
+    // Round left corners on the first visible child (input on mobile, select on desktop)
     &-select {
       height: 100%;
       padding: 0 8px;
@@ -135,6 +146,7 @@
       color: var(--text-primary);
       cursor: pointer;
       max-width: 120px;
+      border-radius: 6px 0 0 6px; // round left edge
 
       @media (max-width: 768px) {
         display: none;
@@ -161,6 +173,13 @@
       font-size: 0.95rem;
       color: var(--text-primary);
       font-family: 'Inter', sans-serif;
+      min-width: 0; // critical: lets input shrink on narrow screens
+
+      @media (max-width: 768px) {
+        font-size: 0.85rem; // slightly smaller so placeholder fits
+        padding: 0 8px;
+        border-radius: 6px 0 0 6px; // round left edge when select is hidden
+      }
 
       &::placeholder {
         color: #999;
@@ -178,7 +197,12 @@
       justify-content: center;
       color: var(--primary);
       transition: var(--transition);
-      flex-shrink: 0;
+      flex-shrink: 0; // never compress — was causing the icon to be cut
+      border-radius: 0 6px 6px 0; // round right edge to match container shape
+
+      @media (max-width: 768px) {
+        padding: 0 12px; // slightly tighter on mobile but still fully visible
+      }
 
       &:hover {
         background: var(--accent-light);

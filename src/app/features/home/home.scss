@@ -8,8 +8,20 @@
   position: relative;
   overflow: hidden;
   width: 100%;
-  height: clamp(180px, 34vw, 380px);
   background: #fff;
+
+  // aspect-ratio scales with screen width — no fixed height means no clipping
+  aspect-ratio: 16 / 5; // ~310px on 1280px screen
+
+  @media (min-width: 1280px) {
+    aspect-ratio: 16 / 4.5; // slightly shorter on very wide screens
+    max-height: 480px; // hard cap on 4K displays
+  }
+
+  @media (max-width: 768px) {
+    aspect-ratio: 16 / 7; // taller ratio on mobile to show more content
+    max-height: 260px;
+  }
 
   &__track {
     height: 100%;
@@ -42,6 +54,11 @@
   }
 }
 
+// Ensure container inside banner always has horizontal padding
+.banner-slider .container {
+  padding-inline: 20px;
+}
+
 .banner-slide {
   position: absolute;
   inset: 0;
@@ -65,12 +82,17 @@
   }
 
   &__img {
-    width: 320px;
-    height: 260px;
+    width: 280px;
+    height: 240px;
     object-fit: contain;
-    object-position: center top;
+    object-position: center center;
     border-radius: var(--radius-lg);
     box-shadow: 0 12px 40px rgba(0, 0, 0, 0.2);
+
+    @media (max-width: 1024px) {
+      width: 220px;
+      height: 200px;
+    }
   }
 
   &__tag {
@@ -90,35 +112,49 @@
     align-items: center;
     justify-content: space-between;
     height: 100%;
+    gap: 24px;
+    padding: 0 8px;
   }
 
   &__content {
     max-width: 500px;
+    min-width: 0;
+    flex: 1;
   }
 
   &__title {
-    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-size: clamp(1.1rem, 3vw, 2.4rem);
     font-weight: 700;
     margin-bottom: 12px;
     line-height: 1.2;
   }
 
   &__sub {
-    font-size: 1rem;
+    font-size: 0.85rem;
     color: var(--text-secondary);
-    margin-bottom: 24px;
+    margin-bottom: 16px;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   &__btn {
     display: inline-block;
-    padding: 12px 28px;
+    padding: 10px 22px;
     color: white;
     border-radius: 6px;
     font-weight: 600;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
     text-decoration: none;
     transition: var(--transition);
     opacity: 0.9;
+    white-space: nowrap;
+
+    @media (max-width: 768px) {
+      padding: 8px 16px;
+      font-size: 0.8rem;
+    }
 
     &:hover {
       opacity: 1;
@@ -136,29 +172,28 @@
     }
   }
 
-  // ─── Full-bleed variant (image as background with text overlay) ───────────
+  // Full-bleed background image
   .banner-slide__bg-img {
     position: absolute;
     inset: 0;
-
     width: 100%;
     height: 100%;
-
     object-fit: cover;
-    object-position: center top;
-
+    object-position: left top; // anchor top-left: top never clipped, left text always visible
     display: block;
-
     z-index: 0;
+
+    @media (min-width: 769px) {
+      object-position: center top; // desktop: center horizontally, always show the top
+    }
   }
 
-  // ─── Full-bleed variant ─────────────────────────────
+  // Full-bleed variant
   &--fullbleed {
     .banner-slide__overlay {
       position: absolute;
       inset: 0;
       z-index: 1;
-
       background: linear-gradient(
         to right,
         rgba(0, 0, 0, 0.68) 0%,
@@ -183,13 +218,11 @@
     }
   }
 
-  // ─── Image-only variant ─────────────────────────────
+  // Image-only variant
   &--imageonly {
     position: absolute;
     inset: 0;
-
     background: transparent !important;
-
     display: block;
 
     .banner-slide__overlay,
@@ -210,7 +243,6 @@
     justify-content: center;
     align-items: center;
     gap: 14px;
-
     overflow-x: auto;
     scrollbar-width: none;
 
@@ -229,49 +261,33 @@
   display: flex;
   align-items: center;
   gap: 10px;
-
   padding: 12px 20px;
-
   border-radius: 999px;
-
   border: 1px solid #e5e7eb;
-
   background: #fff;
-
   white-space: nowrap;
-
   text-decoration: none;
-
   transition: 0.25s ease;
-
   flex-shrink: 0;
-
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 
   &:hover {
     border-color: #d4af37;
-
     background: #d4af37;
     color: white;
-
     transform: translateY(-2px);
-
     box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
   }
 
   &__icon {
     width: 34px;
     height: 34px;
-
     border-radius: 50%;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     background: #d4af37;
     color: white;
-
     flex-shrink: 0;
   }
 
