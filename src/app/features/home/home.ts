@@ -7,11 +7,12 @@ import { Category } from '../../core/models/category.model';
 import { ProductService } from '../../core/services/product.service';
 import { SeoService } from '../../core/services/seo.service';
 import { optimizeImageUrl } from '../../core/utils/image.utils';
+import { LucideAngularModule, ChefHat, Gift, Lightbulb, Umbrella, Package, Grid2x2, CookingPot } from 'lucide-angular';
 
 @Component({
   selector: 'app-home',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, LucideAngularModule],
   templateUrl: './home.html',
   styleUrl: './home.scss'
 })
@@ -39,49 +40,92 @@ export class Home implements OnInit, OnDestroy {
       bg: "#f0f4f8",
       accent: "#131921",
       emoji: "🏪",
-      imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/w_1200,h_480,c_fill,g_auto,f_auto,q_auto/v1778089702/shop_front_website_ks2yp4.webp"
+      imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/v1778491073/home_big_banner_ijgslz.webp"
     },
     {
       title: "Fresh Arrivals in Kitchenware",
       subtitle: "Upgrade your kitchen with premium tools",
-      fullBleed: false,
+      fullBleed: true,
+       imageOnly: true, 
       btn: "Shop Kitchenware",
       slug: "kitchenware",
       bg: "#f0f7ee",
       accent: "#2d7a4f",
-      emoji: "🍳"
+      emoji: "🍳",
+       imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/v1778490273/large_kitchen_banner_sljxd1.png"
     },
     {
       title: "Gift Items for Every Occasion",
       subtitle: "Find the perfect gift for your loved ones",
-      fullBleed: false,
+      fullBleed: true,
+       imageOnly: true, 
       btn: "Shop Gift Items",
       slug: "gift-items",
       bg: "#fef9ee",
       accent: "#92702a",
-      emoji: "🎁"
+      emoji: "🎁",
+       imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/v1778490519/gitt_big_banner_wuhavy.webp"
     },
     {
       title: "Lighting Solutions for Your Home",
       subtitle: "Brighten every corner beautifully",
-      fullBleed: false,
+      fullBleed: true,
+      imageOnly: true,
       btn: "Shop Lighting",
       slug: "lighting",
       bg: "#eef4ff",
       accent: "#1a56db",
-      emoji: "💡"
+      emoji: "💡",
+       imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/v1778490724/led_big_banner_phdzep.webp"
     },
     {
       title: "Quality Umbrellas for Every Season",
       subtitle: "Stay dry and stylish all year round",
-      fullBleed: false,
+      fullBleed: true,
+      imageOnly: true,
       btn: "Shop Umbrellas",
       slug: "umbrellas",
       bg: "#fdf2f8",
       accent: "#9333ea",
-      emoji: "☂️"
+      emoji: "☂️",
+       imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/v1778490840/umbrella_big_image_lzzkkr.webp"
     }
   ];
+
+  readonly icons = {
+    ChefHat,
+    Gift,
+    Lightbulb,
+    Umbrella,
+    Package,
+    Grid2x2,
+    CookingPot
+  };
+
+  getCategoryIcon(slug: string) {
+    switch(slug) {
+      case 'kitchenware':
+        return this.icons.ChefHat;
+
+      case 'gift-items':
+        return this.icons.Gift;
+
+      case 'lighting':
+        return this.icons.Lightbulb;
+
+      case 'umbrellas':
+        return this.icons.Umbrella;
+
+      case 'plastic':
+        return this.icons.Package;
+
+      case 'aluminium':
+        return this.icons.CookingPot;
+
+      default:
+        return this.icons.Grid2x2;
+    }
+  }
 
   widgets: any[] = [];
 

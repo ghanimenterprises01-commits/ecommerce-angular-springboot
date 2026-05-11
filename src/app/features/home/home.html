@@ -81,7 +81,9 @@
         [routerLink]="['/products']"
         [queryParams]="{ category: cat.slug }"
       >
-        <span class="cat-pill__emoji">{{ cat.emoji }}</span>
+        <div class="cat-pill__icon">
+          <lucide-icon [img]="getCategoryIcon(cat.slug)" size="18" strokeWidth="2.2"> </lucide-icon>
+        </div>
         <span class="cat-pill__name">{{ cat.name }}</span>
       </a>
     </div>
