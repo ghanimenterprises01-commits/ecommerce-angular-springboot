@@ -41,7 +41,7 @@
             [alt]="product.name"
             class="pcard__real-img"
           />
-          <span *ngIf="product.imageUrl" class="pcard__emoji">{{ product.emoji }}</span>
+          <span *ngIf="!product.imageUrl" class="pcard__emoji">{{ product.emoji }}</span>
           <span
             class="pcard__badge"
             *ngIf="product.badge"
