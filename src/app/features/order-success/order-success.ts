@@ -1,7 +1,8 @@
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { OrderService, OrderResponse } from '../../core/services/order.service';
+import { OrderService} from '../../core/services/order.service';
+import { OrderResponse } from '../../core/models/order.model';
 
 @Component({
   selector: 'app-order-success',

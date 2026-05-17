@@ -110,10 +110,19 @@ export class CartService {
   }
 
   placeOrder(
-    promoCode?: string,
-    deliveryAddress?: string,
-    notes?: string
-  ) {
+      delivery: {
+        recipientName: string;
+        recipientPhone: string;
+        province: string;
+        district: string;
+        cityTown: string;
+        postalCode?: string;
+        streetAddress: string;
+        deliveryNotes?: string;
+        landmark?: string;
+      },
+      promoCode?: string
+    ) {
     if (!this.authService.isLoggedIn()) {
       this.router.navigate(['/auth/login'], {
         queryParams: { returnUrl: '/cart' }
@@ -133,8 +142,7 @@ export class CartService {
         quantity: item.quantity
       })),
       promoCode: promoCode || undefined,
-      deliveryAddress: deliveryAddress || undefined,
-      notes: notes || undefined
+      ...delivery
     };
 
     this.orderService.placeOrder(request).subscribe({

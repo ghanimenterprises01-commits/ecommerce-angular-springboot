@@ -71,6 +71,13 @@ export const routes: Routes = [
     },
 
     {
+        path: 'orders',
+        loadComponent: () =>
+            import('./features/orders/orders').then(m => m.Orders),
+        canActivate: [authGuard]
+    },
+
+    {
         path: "**",
         redirectTo: ''
     }

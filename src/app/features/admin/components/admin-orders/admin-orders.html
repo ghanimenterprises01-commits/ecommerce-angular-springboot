@@ -1,6 +1,10 @@
 <div class="admin-orders">
   <!-- Status filter pills -->
-  <div class="order-filters">
+
+  <div class="admin-loading" *ngIf="isLoading()">Loading orders...</div>
+  <div class="admin-error" *ngIf="error()">{{ error() }}</div>
+
+  <div class="order-filters" *ngIf="!isLoading()">
     <button
       class="order-filter"
       *ngFor="let status of statuses"
@@ -12,7 +16,7 @@
   </div>
 
   <!-- Orders table -->
-  <div class="admin-card">
+  <div class="admin-card" *ngIf="!isLoading() && !error()">
     <div class="admin-card__header">
       <h2 class="admin-card__title">Orders ({{ filteredOrders.length }})</h2>
     </div>
@@ -34,14 +38,14 @@
         <tbody>
           <tr *ngFor="let order of filteredOrders">
             <td class="admin-table__id">{{ order.id }}</td>
-            <td>{{ order.customer }}</td>
-            <td class="admin-table__phone">{{ order.phone }}</td>
+            <td>{{ order.customerName }}</td>
+            <td class="admin-table__phone">{{ order.recipientPhone }}</td>
             <td>
-              <span class="type-badge" [class]="getTypeClass(order.type)">
-                {{ order.type }}
+              <span class="type-badge" [class]="getTypeClass(order.priceType)">
+                {{ order.priceType }}
               </span>
             </td>
-            <td>{{ order.items }} items</td>
+            <td>{{ order.items.length }} items</td>
             <td>
               <strong>Rs. {{ order.total | number }}</strong>
             </td>
@@ -50,7 +54,7 @@
                 {{ order.status }}
               </span>
             </td>
-            <td class="admin-table__date">{{ order.date }}</td>
+            <td class="admin-table__date">{{ order.createdAt | date: 'd MMM yyyy' }}</td>
             <td>
               <button class="table-actions__btn table-actions__btn--edit">View</button>
             </td>
