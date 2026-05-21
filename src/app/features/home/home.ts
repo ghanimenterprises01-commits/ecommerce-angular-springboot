@@ -1,5 +1,5 @@
 import { Component, signal, OnInit, OnDestroy, inject, PLATFORM_ID } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { CommonModule, isPlatformBrowser } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { Product } from '../../core/models/product.model';
@@ -27,7 +27,31 @@ export class Home implements OnInit, OnDestroy {
   categories = signal<Category[]>([]);
   isLoadingProducts = signal(true);
 
-  constructor(private productService: ProductService, private seo: SeoService) {}
+  mobileSearchQuery = signal('');
+
+  constructor(private productService: ProductService, private seo: SeoService, private router: Router) {}
+
+  onMobileSearchInput(event: Event) {
+    this.mobileSearchQuery.set((event.target as HTMLInputElement).value);
+  }
+
+  onMobileSearch() {
+    const q = this.mobileSearchQuery().trim();
+    if (q) this.router.navigate(['/search'], { queryParams: { q } });
+  }
+
+  getCategoryColor(slug: string): { bg: string; icon: string } {
+    const map: Record<string, { bg: string; icon: string }> = {
+      'kitchenware': { bg: '#FFF0E0', icon: '#E67E22' },
+      'aluminium':   { bg: '#EFEFEF', icon: '#666666' },
+      'plastic':     { bg: '#E0F4F0', icon: '#00897B' },
+      'gift-items':  { bg: '#F5E8FF', icon: '#8E44AD' },
+      'umbrellas':   { bg: '#FDECEA', icon: '#C0392B' },
+      'lighting':    { bg: '#FFF8E0', icon: '#D4A017' },
+      'general':     { bg: '#F0EDE8', icon: '#7D6B52' },
+    };
+    return map[slug] ?? { bg: '#F0F0F0', icon: '#666' };
+  }
 
   banners = [
       {
