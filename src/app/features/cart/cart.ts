@@ -1,6 +1,6 @@
 import { Component, signal, computed, effect } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { environment } from '../../../environments/environment';
 import { CartService } from '../../core/services/cart.service';
 import { AuthService } from '../../core/services/auth.service';
@@ -28,7 +28,8 @@ export class Cart {
     public cartService: CartService,
     public authService: AuthService,
     private toast: ToastService,
-    private router: Router
+    private router: Router,
+    private location: Location
   ) {
     effect(() => {
       if (this.cartService.orderSuccess()) {
@@ -42,6 +43,8 @@ export class Cart {
       }
     })
   }
+
+  goBack() { this.location.back(); }
 
   get subtotal() { return this.cartService.subtotal(); }
   get totalItems() { return this.cartService.totalItems(); }

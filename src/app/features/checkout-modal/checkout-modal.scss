@@ -130,6 +130,59 @@
   }
 }
 
+// ── Mobile bottom-sheet ───────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .checkout-overlay {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .checkout-modal {
+    max-width: 100%;
+    border-radius: 20px 20px 0 0;
+    max-height: 92vh;
+
+    &__header {
+      border-radius: 20px 20px 0 0;
+      padding: 1rem 1.25rem;
+
+      &::before {
+        content: '';
+        display: block;
+        width: 40px;
+        height: 4px;
+        background: var(--border);
+        border-radius: 100px;
+        margin: 0 auto 12px;
+      }
+    }
+
+    &__body {
+      padding: 1.25rem;
+    }
+
+    &__footer {
+      border-radius: 0;
+      padding: 1rem 1.25rem;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    &__cancel {
+      width: 100%;
+      order: 2;
+    }
+
+    &__submit {
+      width: 100%;
+      justify-content: center;
+      order: 1;
+      padding: 13px 20px;
+      font-size: 1rem;
+    }
+  }
+}
+
 // ── Form layout ──────────────────────────────────────────────────────────────
 
 .checkout-form {
@@ -300,6 +353,7 @@
   &__labels {
     display: flex;
     gap: 0.75rem;
+    flex-wrap: wrap;
   }
 
   // Matches the quantity button / promo button style from cart.scss

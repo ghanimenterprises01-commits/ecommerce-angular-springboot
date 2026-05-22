@@ -1,4 +1,4 @@
-import { CommonModule, ViewportScroller } from '@angular/common';
+import { CommonModule, Location, ViewportScroller } from '@angular/common';
 import { Component, ElementRef, OnInit, signal, ViewChild } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { environment } from '../../../../environments/environment';
@@ -34,7 +34,9 @@ export class ProductDetail implements OnInit{
   relatedTrack!: ElementRef;
 
 
-  constructor(private route: ActivatedRoute, private productService: ProductService, private cartService: CartService, private seo: SeoService, private wishlistService: WishListService) {}
+  constructor(private route: ActivatedRoute, private productService: ProductService, public cartService: CartService, private seo: SeoService, private wishlistService: WishListService, private location: Location) {}
+
+  goBack() { this.location.back(); }
 
   ngOnInit(){
     this.route.params.subscribe(params => {

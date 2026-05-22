@@ -10,7 +10,7 @@
   background: var(--primary);
 
   @media (max-width: 768px) {
-    background: #c0392b;
+    background: var(--primary);
   }
 
   &__action-icon {
@@ -171,8 +171,8 @@
     position: absolute;
     top: 4px;
     right: 4px;
-    background: #f5b800;
-    color: #333;
+    background: var(--accent);
+    color: var(--primary);
     font-size: 0.58rem;
     font-weight: 700;
     min-width: 16px;

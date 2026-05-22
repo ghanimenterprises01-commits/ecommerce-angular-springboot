@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, Location } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { environment } from '../../../environments/environment';
@@ -53,7 +53,15 @@ export class Products implements OnInit {
 
   
 
-  constructor(private route: ActivatedRoute, private ProductService: ProductService, private cartService: CartService, private seo: SeoService, public wishlistService: WishListService, public authService: AuthService) {}
+  constructor(private route: ActivatedRoute, private ProductService: ProductService, public cartService: CartService, private seo: SeoService, public wishlistService: WishListService, public authService: AuthService, private location: Location) {}
+
+  goBack() { this.location.back(); }
+
+  get currentTitle(): string {
+    if (this.selectedBadge() === 'SALE') return "Today's Deals";
+    if (this.selectedCategory()) return this.categories.find(c => c.slug === this.selectedCategory())?.name ?? 'Products';
+    return 'All Products';
+  }
 
   ngOnInit() {
     this.seo.updateMeta({

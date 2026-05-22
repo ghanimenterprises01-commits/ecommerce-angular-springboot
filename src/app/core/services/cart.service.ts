@@ -29,7 +29,7 @@ export class CartService {
   );
 
   deliveryFee = computed(() =>
-    this.subtotal() >= 5000 ? 0 : 350
+    this.subtotal() >= 10000 ? 0 : 350
   );
 
   constructor(

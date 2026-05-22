@@ -186,11 +186,20 @@ import { ToastService } from './core/services/toast.service';
         }
 
         &--active {
-          color: #c0392b;
+          color: var(--primary);
+          font-weight: 700;
+
+          svg {
+            stroke: var(--accent);
+          }
         }
 
         &--wa {
           color: #25D366;
+
+          svg {
+            fill: #25D366;
+          }
 
           &.bottom-nav__item--active {
             color: #25D366;

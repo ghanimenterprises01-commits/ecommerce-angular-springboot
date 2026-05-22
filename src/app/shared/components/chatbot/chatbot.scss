@@ -9,6 +9,12 @@
   gap: 12px;
   pointer-events: none;
 
+  @media (max-width: 768px) {
+    bottom: 76px;
+    right: 14px;
+    gap: 8px;
+  }
+
   // Toggle button
   &__toggle {
     display: flex;
@@ -27,6 +33,14 @@
     font-weight: 600;
     pointer-events: all;
 
+    @media (max-width: 768px) {
+      padding: 10px;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      justify-content: center;
+    }
+
     &:hover {
       background: var(--primary-light);
       transform: translateY(-2px);
@@ -37,11 +51,19 @@
       background: var(--primary-light);
       border-radius: 50%;
       padding: 14px;
+
+      @media (max-width: 768px) {
+        padding: 10px;
+      }
     }
   }
 
   &__toggle-label {
     white-space: nowrap;
+
+    @media (max-width: 768px) {
+      display: none;
+    }
   }
 
   // Chat window
@@ -58,9 +80,10 @@
     animation: slideUp 0.3s ease;
     pointer-events: all;
 
-    @media (max-width: 480px) {
-      width: calc(100vw - 32px);
-      height: 480px;
+    @media (max-width: 768px) {
+      width: calc(100vw - 28px);
+      height: 420px;
+      border-radius: 16px;
     }
   }
 
