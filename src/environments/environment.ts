@@ -1,7 +1,8 @@
 export const environment = {
-    production: false,
+    production: true,
     shopName: 'Ghanim Enterprises',
     apiUrl: 'https://api.ghanimenterprises.lk/api',
     currency: 'LKR',
-    currencySymbol: 'Rs. '
+    currencySymbol: 'Rs. ',
+    siteUrl: 'https://ghanimenterprises.lk'
 };

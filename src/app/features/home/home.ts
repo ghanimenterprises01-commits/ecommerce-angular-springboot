@@ -160,7 +160,8 @@ export class Home implements OnInit, OnDestroy {
     this.seo.updateMeta({
       title: 'Quality Home Products in Sri Lanka',
       description: 'Shop kitchenware, aluminium, plastic, gift items, umbrellas and lighting at best prices in Sri Lanka. Free delivery over Rs. 10,000.',
-      keywords: 'kitchenware Sri Lanka, aluminium products, gift items, umbrellas, lighting, wholesale retail'
+      keywords: 'kitchenware Sri Lanka, aluminium products, gift items, umbrellas, lighting, wholesale retail',
+      canonicalPath: '/'
     });
 
     // Banner slider only in browser

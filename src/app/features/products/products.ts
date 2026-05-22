@@ -65,9 +65,10 @@ export class Products implements OnInit {
 
   ngOnInit() {
     this.seo.updateMeta({
-    title: 'All Products',
-    description: 'Browse all products at Ghanim Enterprises — kitchenware, aluminium, plastic, gift items, umbrellas and lighting.',
-    keywords: 'buy household products Sri Lanka, kitchenware, aluminium, plastic'
+      title: 'All Products',
+      description: 'Browse all products at Ghanim Enterprises — kitchenware, aluminium, plastic, gift items, umbrellas and lighting.',
+      keywords: 'buy household products Sri Lanka, kitchenware, aluminium, plastic',
+      canonicalPath: '/products'
     });
   this.route.queryParams.subscribe(params => {
   const category = params['category'] || '';

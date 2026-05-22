@@ -4,5 +4,7 @@ Disallow: /admin
 Disallow: /auth
 Disallow: /cart
 Disallow: /order-success
+Disallow: /wishlist
+Disallow: /orders
 
 Sitemap: https://ghanimenterprises.lk/sitemap.xml
