@@ -142,7 +142,7 @@
           </div>
           <!-- Image URLs section -->
           <div class="admin-form__field admin-form__field--full">
-            <label>Product Images (Cloudinary URLs)</label>
+            <label>Product Images</label>
             <div class="image-url-inputs">
               <div
                 class="image-url-input"
@@ -151,13 +151,31 @@
                 <span class="image-url-input__label">
                   {{ i === 0 ? '⭐ Main' : 'Image ' + (i + 1) }}
                 </span>
-                <input
-                  type="text"
-                  [placeholder]="'https://res.cloudinary.com/...'"
-                  [value]="url"
-                  (blur)="onImageUrlInput(i, $event)"
-                  (keyup.enter)="onImageUrlInput(i, $event)"
-                />
+                <div class="image-url-input__row">
+                  <input
+                    type="text"
+                    [placeholder]="'https://res.cloudinary.com/...'"
+                    [value]="url"
+                    (blur)="onImageUrlInput(i, $event)"
+                    (keyup.enter)="onImageUrlInput(i, $event)"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    [id]="'new-file-' + i"
+                    class="hidden-file-input"
+                    (change)="onNewFileSelected(i, $event)"
+                  />
+                  <button
+                    type="button"
+                    class="upload-btn"
+                    [disabled]="uploadingSlot() !== null"
+                    (click)="triggerFileInput('new-file-' + i)"
+                  >
+                    <span *ngIf="uploadingSlot() === 'new-' + i">⏳</span>
+                    <span *ngIf="uploadingSlot() !== 'new-' + i">📁 Upload</span>
+                  </button>
+                </div>
                 <div class="image-url-input__preview" *ngIf="url">
                   <img [src]="url" alt="preview" onerror="this.style.display = 'none'" />
                 </div>
@@ -280,7 +298,7 @@
             </select>
           </div>
           <div class="admin-form__field admin-form__field--full">
-            <label>Product Images (Cloudinary URLs)</label>
+            <label>Product Images</label>
             <div class="image-url-inputs">
               <div
                 class="image-url-input"
@@ -293,13 +311,31 @@
                 <span class="image-url-input__label">
                   {{ i === 0 ? '⭐ Main' : 'Image ' + (i + 1) }}
                 </span>
-                <input
-                  type="text"
-                  [placeholder]="'https://res.cloudinary.com/...'"
-                  [value]="url"
-                  (blur)="onEditImageUrlInput(i, $event)"
-                  (keyup.enter)="onEditImageUrlInput(i, $event)"
-                />
+                <div class="image-url-input__row">
+                  <input
+                    type="text"
+                    [placeholder]="'https://res.cloudinary.com/...'"
+                    [value]="url"
+                    (blur)="onEditImageUrlInput(i, $event)"
+                    (keyup.enter)="onEditImageUrlInput(i, $event)"
+                  />
+                  <input
+                    type="file"
+                    accept="image/*"
+                    [id]="'edit-file-' + i"
+                    class="hidden-file-input"
+                    (change)="onEditFileSelected(i, $event)"
+                  />
+                  <button
+                    type="button"
+                    class="upload-btn"
+                    [disabled]="uploadingSlot() !== null"
+                    (click)="triggerFileInput('edit-file-' + i)"
+                  >
+                    <span *ngIf="uploadingSlot() === 'edit-' + i">⏳</span>
+                    <span *ngIf="uploadingSlot() !== 'edit-' + i">📁 Upload</span>
+                  </button>
+                </div>
                 <div class="image-url-input__preview" *ngIf="url">
                   <img [src]="url" alt="preview" onerror="this.style.display = 'none'" />
                 </div>

@@ -4,5 +4,6 @@ export const environment = {
     apiUrl: 'https://api.ghanimenterprises.lk/api',
     currency: 'LKR',
     currencySymbol: 'Rs. ',
-    siteUrl: 'https://ghanimenterprises.lk'
+    siteUrl: 'https://ghanimenterprises.lk',
+    imagekitEndpoint: 'https://ik.imagekit.io/jljsfouwenlblj'
 };

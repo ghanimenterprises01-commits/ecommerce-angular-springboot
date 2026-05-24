@@ -5,6 +5,7 @@ import { Category } from '../../../../core/models/category.model';
 import { ProductService } from '../../../../core/services/product.service';
 import { Admin } from '../../admin';
 import { ToastService } from '../../../../core/services/toast.service';
+import { CloudinaryUploadService } from '../../../../core/services/cloudinary-upload.service';
 
 @Component({
   selector: 'app-admin-products',
@@ -45,7 +46,13 @@ export class AdminProducts implements OnInit {
 
   editProduct = signal<any>(null);
 
-  constructor(private productService: ProductService, private toast: ToastService){}
+  uploadingSlot = signal<string | null>(null); // 'new-0', 'edit-2', etc.
+
+  constructor(
+    private productService: ProductService,
+    private toast: ToastService,
+    private cloudinaryUpload: CloudinaryUploadService
+  ) {}
 
   ngOnInit() {
     this.loadProducts();
@@ -277,6 +284,52 @@ export class AdminProducts implements OnInit {
       urls[index] = value;
       return {...p, imageUrls: urls};
     })
+  }
+
+  triggerFileInput(id: string) {
+    document.getElementById(id)?.click();
+  }
+
+  async onNewFileSelected(index: number, event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const slot = `new-${index}`;
+    this.uploadingSlot.set(slot);
+    try {
+      const url = await this.cloudinaryUpload.upload(file);
+      this.newProduct.update(p => {
+        const urls = [...p.imageUrls];
+        urls[index] = url;
+        return { ...p, imageUrls: urls };
+      });
+    } catch {
+      this.toast.error('Upload failed. Check your Cloudinary upload preset.');
+    } finally {
+      this.uploadingSlot.set(null);
+      (event.target as HTMLInputElement).value = '';
+    }
+  }
+
+  async onEditFileSelected(index: number, event: Event) {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (!file) return;
+
+    const slot = `edit-${index}`;
+    this.uploadingSlot.set(slot);
+    try {
+      const url = await this.cloudinaryUpload.upload(file);
+      this.editProduct.update((p: any) => {
+        const urls = [...(p.imageUrls || ['', '', '', ''])];
+        urls[index] = url;
+        return { ...p, imageUrls: urls };
+      });
+    } catch {
+      this.toast.error('Upload failed. Check your Cloudinary upload preset.');
+    } finally {
+      this.uploadingSlot.set(null);
+      (event.target as HTMLInputElement).value = '';
+    }
   }
 
   trackByIndex(index: number): number {
