@@ -1,4 +1,4 @@
-.admin-orders {
+﻿.admin-orders {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -24,13 +24,13 @@
 
   &:hover {
     border-color: #c9a84c;
-    color: #131921;
+    color: #112040;
   }
 
   &.active {
-    background: #131921;
+    background: #112040;
     color: white;
-    border-color: #131921;
+    border-color: #112040;
   }
 }
 
@@ -117,7 +117,7 @@
     font-family: 'Inter', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #131921;
+    color: #112040;
   }
 }
 
@@ -145,7 +145,7 @@
   td {
     padding: 12px 16px;
     font-size: 0.85rem;
-    color: #131921;
+    color: #112040;
     border-bottom: 1px solid #f0ede6;
   }
 

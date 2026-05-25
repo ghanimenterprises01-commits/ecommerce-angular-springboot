@@ -117,7 +117,7 @@ import { ToastService } from './core/services/toast.service';
       position: fixed;
       bottom: 100px;
       right: 24px;
-      background: #131921;
+      background: #112040;
       color: #c9a84c;
       padding: 10px 16px;
       border-radius: 100px;

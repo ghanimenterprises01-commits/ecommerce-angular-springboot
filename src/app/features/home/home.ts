@@ -58,13 +58,14 @@ export class Home implements OnInit, OnDestroy {
       title: "Welcome to Ghanim Enterprises",
       subtitle: "Quality household products for every home in Sri Lanka",
       fullBleed: true,
-      imageOnly: true, 
+      imageOnly: true,
       btn: "Shop Now",
       slug: "",
       bg: "#f0f4f8",
-      accent: "#131921",
+      accent: "#112040",
       emoji: "🏪",
-      imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/v1778491073/home_big_banner_ijgslz.webp"
+      imageUrl: "https://ik.imagekit.io/jljsfouwenlblj/products/ChatGPT%20Image%20May%2025,%202026,%2004_16_14%20PM.webp",
+      mobileImageUrl: "https://ik.imagekit.io/jljsfouwenlblj/products/ChatGPT%20Image%20May%2025,%202026,%2004_35_49%20PM.webp"
     },
     {
       title: "Fresh Arrivals in Kitchenware",

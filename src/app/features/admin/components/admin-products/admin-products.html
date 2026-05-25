@@ -154,7 +154,7 @@
                 <div class="image-url-input__row">
                   <input
                     type="text"
-                    [placeholder]="'https://res.cloudinary.com/...'"
+                    [placeholder]="'https://ik.imagekit.io/...'"
                     [value]="url"
                     (blur)="onImageUrlInput(i, $event)"
                     (keyup.enter)="onImageUrlInput(i, $event)"
@@ -314,7 +314,7 @@
                 <div class="image-url-input__row">
                   <input
                     type="text"
-                    [placeholder]="'https://res.cloudinary.com/...'"
+                    [placeholder]="'https://ik.imagekit.io/...'"
                     [value]="url"
                     (blur)="onEditImageUrlInput(i, $event)"
                     (keyup.enter)="onEditImageUrlInput(i, $event)"
@@ -397,9 +397,18 @@
           <tr *ngFor="let product of filteredProducts">
             <td>
               <div class="product-cell">
-                <span class="product-cell__emoji">
-                  {{ product.emoji }}
-                </span>
+                <div class="product-cell__thumb">
+                  <img
+                    *ngIf="product.imageUrl"
+                    [src]="product.imageUrl"
+                    [alt]="product.name"
+                    onerror="this.style.display='none'; this.nextElementSibling.style.display='flex'"
+                  />
+                  <span
+                    class="product-cell__emoji"
+                    [style.display]="product.imageUrl ? 'none' : 'flex'"
+                  >{{ product.emoji }}</span>
+                </div>
                 <span class="product-cell__name">
                   {{ product.name }}
                 </span>

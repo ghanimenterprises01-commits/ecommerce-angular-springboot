@@ -1,4 +1,4 @@
-.toast-container {
+﻿.toast-container {
   position: fixed;
   top: 90px;
   right: 24px;
@@ -28,7 +28,7 @@
   font-size: 0.88rem;
   font-weight: 500;
   font-family: 'Inter', sans-serif;
-  color: #131921;
+  color: #112040;
   pointer-events: all;
   min-width: 280px;
   max-width: 360px;
@@ -69,7 +69,7 @@
     padding: 2px;
 
     &:hover {
-      color: #131921;
+      color: #112040;
     }
   }
 }

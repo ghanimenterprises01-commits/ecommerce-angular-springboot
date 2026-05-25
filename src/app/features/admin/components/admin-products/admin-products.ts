@@ -1,9 +1,8 @@
 import { CommonModule } from '@angular/common';
 import { Component, OnInit, signal } from '@angular/core';
-import { AdminProduct, Product, ProductRequest } from '../../../../core/models/product.model';
+import { AdminProduct, ProductRequest } from '../../../../core/models/product.model';
 import { Category } from '../../../../core/models/category.model';
 import { ProductService } from '../../../../core/services/product.service';
-import { Admin } from '../../admin';
 import { ToastService } from '../../../../core/services/toast.service';
 import { CloudinaryUploadService } from '../../../../core/services/cloudinary-upload.service';
 
@@ -160,16 +159,11 @@ export class AdminProducts implements OnInit {
   }
 
   addProduct() {
-     const p = this.newProduct();
-  console.log('Current form state:', p);
-  console.log('name:', p.name);
-  console.log('categoryId:', p.categoryId, typeof p.categoryId);
-  console.log('retailPrice:', p.retailPrice, typeof p.retailPrice);
+    const p = this.newProduct();
 
-  if (!p.name || !p.categoryId || !p.retailPrice) {
-    console.log('BLOCKED by validation');
-    return;   
-  }
+    if (!p.name || !p.categoryId || !p.retailPrice) return;
+
+    this.isSaving.set(true);
     const request: ProductRequest = {
       name: p.name,
       description: p.description?.trim() || '',
@@ -249,7 +243,7 @@ export class AdminProducts implements OnInit {
         this.deleteConfirmId.set(null);
         this.loadProducts();
       },
-      error: (err) => {
+      error: () => {
         this.toast.error('Failed to delete product');
         this.deleteConfirmId.set(null);
       }
@@ -304,7 +298,7 @@ export class AdminProducts implements OnInit {
         return { ...p, imageUrls: urls };
       });
     } catch {
-      this.toast.error('Upload failed. Check your Cloudinary upload preset.');
+      this.toast.error('Image upload failed. Please try again.');
     } finally {
       this.uploadingSlot.set(null);
       (event.target as HTMLInputElement).value = '';
@@ -325,7 +319,7 @@ export class AdminProducts implements OnInit {
         return { ...p, imageUrls: urls };
       });
     } catch {
-      this.toast.error('Upload failed. Check your Cloudinary upload preset.');
+      this.toast.error('Image upload failed. Please try again.');
     } finally {
       this.uploadingSlot.set(null);
       (event.target as HTMLInputElement).value = '';
