@@ -64,7 +64,7 @@ export class Home implements OnInit, OnDestroy {
       bg: "#f0f4f8",
       accent: "#112040",
       emoji: "🏪",
-      imageUrl: "https://ik.imagekit.io/jljsfouwenlblj/products/ChatGPT%20Image%20May%2025,%202026,%2004_16_14%20PM.webp",
+      imageUrl: "https://res.cloudinary.com/dbet3dqvh/image/upload/v1778491073/home_big_banner_ijgslz.webp",
       mobileImageUrl: "https://ik.imagekit.io/jljsfouwenlblj/products/ChatGPT%20Image%20May%2025,%202026,%2004_35_49%20PM.webp"
     },
     {

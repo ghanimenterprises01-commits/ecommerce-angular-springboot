@@ -23,7 +23,12 @@
         *ngFor="let banner of banners; let i = index"
         [class.active]="currentBanner() === i"
       >
-        <img [src]="optimizeImage(banner.mobileImageUrl || banner.imageUrl, 900)" [alt]="banner.title" class="m-slide__img" />
+        <img
+          [src]="optimizeImage(banner.mobileImageUrl || banner.imageUrl, 900)"
+          [alt]="banner.title"
+          class="m-slide__img"
+          [class.m-slide__img--contain]="!banner.mobileImageUrl"
+        />
         <div class="m-slide__overlay">
           <a
             class="m-slide__cta"

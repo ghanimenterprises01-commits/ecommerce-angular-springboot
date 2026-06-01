@@ -112,6 +112,12 @@
     object-fit: cover;
     object-position: center;
     display: block;
+
+    // Desktop-ratio images without a mobile crop: show full image, no cropping
+    &--contain {
+      object-fit: contain;
+      background: #112040;
+    }
   }
 
   // Bottom gradient + CTA
@@ -200,12 +206,11 @@
   width: 100%;
   background: #fff;
 
-  // aspect-ratio scales with screen width — no fixed height means no clipping
-  aspect-ratio: 16 / 5; // ~310px on 1280px screen
+  aspect-ratio: 16 / 5;
 
   @media (min-width: 1280px) {
-    aspect-ratio: 16 / 4.5; // slightly shorter on very wide screens
-    max-height: 480px; // hard cap on 4K displays
+    aspect-ratio: 16 / 4.5;
+    max-height: 480px;
   }
 
   @media (max-width: 768px) {
