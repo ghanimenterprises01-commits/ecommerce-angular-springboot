@@ -1,0 +1,261 @@
+.returns {
+  background: #faf8f5;
+  min-height: 100vh;
+  padding: 48px 0 80px;
+
+  @media (max-width: 768px) {
+    padding: 24px 0 60px;
+  }
+}
+
+.returns__hero {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.returns__title {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #112040;
+  margin-bottom: 8px;
+
+  @media (max-width: 768px) {
+    font-size: 1.6rem;
+  }
+}
+
+.returns__subtitle {
+  font-size: 1rem;
+  color: #6b6b80;
+}
+
+// Summary cards
+.returns__summary {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 48px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 560px) {
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+}
+
+.returns__card {
+  background: white;
+  border-radius: 14px;
+  border: 1px solid #e8e4dc;
+  padding: 24px 20px;
+  text-align: center;
+
+  @media (max-width: 560px) {
+    padding: 16px 12px;
+  }
+
+  &-icon {
+    font-size: 2rem;
+    margin-bottom: 12px;
+  }
+
+  h3 {
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #112040;
+    margin-bottom: 6px;
+
+    @media (max-width: 560px) {
+      font-size: 0.82rem;
+    }
+  }
+
+  p {
+    font-size: 0.82rem;
+    color: #6b6b80;
+    line-height: 1.5;
+
+    @media (max-width: 560px) {
+      font-size: 0.75rem;
+    }
+  }
+}
+
+// Body sections
+.returns__body {
+  background: white;
+  border-radius: 16px;
+  border: 1px solid #e8e4dc;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  @media (max-width: 768px) {
+    padding: 24px 20px;
+    gap: 32px;
+  }
+}
+
+.returns__section {
+  h2 {
+    font-family: 'Inter', sans-serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #112040;
+    margin-bottom: 16px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #f0ede6;
+  }
+
+  p {
+    font-size: 0.92rem;
+    color: #444;
+    line-height: 1.7;
+
+    a {
+      color: #c9a84c;
+      font-weight: 600;
+      text-decoration: none;
+      &:hover { text-decoration: underline; }
+    }
+  }
+}
+
+// Steps
+.returns__steps {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  li {
+    display: flex;
+    gap: 16px;
+    align-items: flex-start;
+
+    strong {
+      display: block;
+      font-size: 0.92rem;
+      font-weight: 700;
+      color: #112040;
+      margin-bottom: 4px;
+    }
+
+    p {
+      margin: 0;
+      font-size: 0.88rem;
+      color: #555;
+      line-height: 1.6;
+    }
+  }
+}
+
+.returns__step-num {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #112040;
+  color: white;
+  font-size: 0.82rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2px;
+}
+
+// Conditions
+.returns__conditions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.returns__condition {
+  border-radius: 12px;
+  padding: 20px;
+
+  h4 {
+    font-size: 0.88rem;
+    font-weight: 700;
+    margin-bottom: 12px;
+  }
+
+  ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    li {
+      font-size: 0.85rem;
+      color: #444;
+      line-height: 1.5;
+      padding-left: 12px;
+      position: relative;
+
+      &::before {
+        content: '–';
+        position: absolute;
+        left: 0;
+        color: #aaa;
+      }
+    }
+  }
+
+  &--ok {
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+
+    h4 { color: #065f46; }
+  }
+
+  &--no {
+    background: #fff5f5;
+    border: 1px solid #fecaca;
+
+    h4 { color: #b91c1c; }
+  }
+}
+
+// Contact buttons
+.returns__contact {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.returns__contact-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 11px 22px;
+  border-radius: 10px;
+  font-size: 0.88rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: opacity 0.2s;
+
+  &:hover { opacity: 0.88; }
+
+  &--wa {
+    background: #25D366;
+    color: white;
+  }
+
+  &--email {
+    background: #112040;
+    color: white;
+  }
+}

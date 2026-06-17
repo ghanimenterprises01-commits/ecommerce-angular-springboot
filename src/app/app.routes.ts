@@ -78,6 +78,13 @@ export const routes: Routes = [
     },
 
     {
+        path: 'returns',
+        title: 'Return Policy — Ghanim Enterprises',
+        loadComponent: () =>
+            import('./features/returns/returns').then(m => m.Returns)
+    },
+
+    {
         path: "**",
         redirectTo: ''
     }
